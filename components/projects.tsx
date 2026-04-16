@@ -38,13 +38,32 @@ export default function Projects() {
   const [hovered, setHovered] = useState<string | null>(null)
 
   return (
-    <section id="projects" className="relative px-8 md:px-20 py-32">
-      <div className="max-w-7xl w-full mx-auto">
+    <section id="projects" className="relative px-8 md:px-20 py-32 overflow-hidden">
+
+      {/* Background */}
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{
+          backgroundImage: `
+            linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px)
+          `,
+          backgroundSize: "60px 60px",
+        }}
+      />
+      <div
+        aria-hidden
+        className="absolute inset-0 pointer-events-none"
+        style={{ background: "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 50%, #030712 100%)" }}
+      />
+
+      <div className="max-w-7xl w-full mx-auto relative z-10">
         <motion.p
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-primary text-xs tracking-[0.4em] uppercase mb-4"
+          className="text-primary text-xs tracking-[0.4em] uppercase mb-4 font-[family-name:var(--font-geist-mono)]"
         >
           Projects
         </motion.p>
@@ -58,67 +77,108 @@ export default function Projects() {
           Featured Work
         </motion.h2>
 
-        <div className="border-t border-border/40">
-          {projects.map((p, i) => (
-            <motion.a
-              key={p.id}
-              href={p.href}
-              initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
-              onMouseEnter={() => setHovered(p.id)}
-              onMouseLeave={() => setHovered(null)}
-              className="block border-b border-border/40 py-10 group transition-colors duration-300 hover:bg-foreground/[0.02]"
-            >
-              <div className="flex items-start justify-between gap-8">
-                <div className="flex items-start gap-8">
-                  <span className="font-mono text-sm text-primary/60 mt-1 shrink-0">{p.id}</span>
-                  <div>
-                    <h3
-                      className={`font-[family-name:var(--font-bebas-neue)] text-4xl md:text-6xl leading-none transition-colors duration-300 ${
-                        hovered === p.id ? "text-primary" : "text-foreground"
-                      }`}
+        <div style={{ borderTop: "1px solid rgba(0,229,255,0.14)" }}>
+          {projects.map((p, i) => {
+            const isHov = hovered === p.id
+            return (
+              <motion.a
+                key={p.id}
+                href={p.href}
+                data-cursor-hover
+                initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.7, delay: i * 0.1, ease: EASE }}
+                onMouseEnter={() => setHovered(p.id)}
+                onMouseLeave={() => setHovered(null)}
+                className="block py-10 group transition-colors duration-300 relative"
+                style={{
+                  borderBottom: "1px solid rgba(0,229,255,0.14)",
+                  background: isHov ? "rgba(0,229,255,0.02)" : "transparent",
+                }}
+              >
+                {/* Left neon accent on hover */}
+                <motion.div
+                  className="absolute left-0 top-0 bottom-0 w-px"
+                  animate={{
+                    opacity: isHov ? 1 : 0,
+                    background: "#ff00aa",
+                    boxShadow: isHov ? "0 0 8px rgba(255,0,170,0.8)" : "none",
+                  }}
+                  transition={{ duration: 0.2 }}
+                />
+
+                <div className="flex items-start justify-between gap-8 pl-5">
+                  <div className="flex items-start gap-8">
+                    <span
+                      className="font-[family-name:var(--font-geist-mono)] text-sm mt-1 shrink-0 transition-colors duration-200"
+                      style={{ color: isHov ? "#00e5ff" : "rgba(0,229,255,0.35)" }}
                     >
-                      {p.title}
-                    </h3>
-                    <p className="text-foreground/45 mt-3 max-w-xl leading-relaxed text-sm">
-                      {p.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mt-5">
-                      {p.tags.map((t) => (
-                        <span
-                          key={t}
-                          className="text-[10px] text-foreground/35 border border-border/40 px-3 py-1 tracking-wider"
-                        >
-                          {t}
-                        </span>
-                      ))}
+                      {p.id}
+                    </span>
+                    <div>
+                      <h3
+                        className="font-[family-name:var(--font-bebas-neue)] text-4xl md:text-6xl leading-none transition-all duration-300"
+                        style={{
+                          color: isHov ? "#00e5ff" : "#e8f4ff",
+                          textShadow: isHov ? "0 0 20px rgba(0,229,255,0.4)" : "none",
+                        }}
+                      >
+                        {p.title}
+                      </h3>
+                      <p className="text-foreground/50 mt-3 max-w-xl leading-relaxed text-sm">
+                        {p.description}
+                      </p>
+                      <div className="flex flex-wrap gap-2 mt-5">
+                        {p.tags.map((t) => (
+                          <span
+                            key={t}
+                            className="text-[10px] tracking-wider font-[family-name:var(--font-geist-mono)] px-3 py-1 transition-all duration-200"
+                            style={{
+                              color: isHov ? "rgba(0,229,255,0.8)" : "rgba(232,244,255,0.3)",
+                              border: isHov
+                                ? "1px solid rgba(0,229,255,0.4)"
+                                : "1px solid rgba(232,244,255,0.12)",
+                              boxShadow: isHov ? "0 0 6px rgba(0,229,255,0.2)" : "none",
+                            }}
+                          >
+                            {t}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
-                </div>
 
-                <div className="flex items-center gap-5 shrink-0 pt-1">
-                  <span className="text-foreground/25 text-sm">{p.year}</span>
-                  <motion.span
-                    animate={{
-                      x: hovered === p.id ? 0 : -8,
-                      opacity: hovered === p.id ? 1 : 0,
-                    }}
-                    transition={{ duration: 0.25 }}
-                    className="text-primary text-xl"
-                  >
-                    →
-                  </motion.span>
+                  <div className="flex items-center gap-5 shrink-0 pt-1">
+                    <span
+                      className="text-sm font-[family-name:var(--font-geist-mono)]"
+                      style={{ color: "rgba(232,244,255,0.25)" }}
+                    >
+                      {p.year}
+                    </span>
+                    <motion.span
+                      animate={{
+                        x: isHov ? 0 : -8,
+                        opacity: isHov ? 1 : 0,
+                        color: "#00e5ff",
+                      }}
+                      transition={{ duration: 0.25 }}
+                      className="text-xl"
+                      style={{ textShadow: "0 0 8px rgba(0,229,255,0.8)" }}
+                    >
+                      →
+                    </motion.span>
+                  </div>
                 </div>
-              </div>
-            </motion.a>
-          ))}
+              </motion.a>
+            )
+          })}
         </div>
       </div>
 
       <div
         aria-hidden
-        className="absolute right-0 bottom-8 font-[family-name:var(--font-bebas-neue)] text-[22vw] leading-none text-foreground/[0.03] select-none pointer-events-none"
+        className="absolute right-0 bottom-8 font-[family-name:var(--font-bebas-neue)] text-[22vw] leading-none select-none pointer-events-none"
+        style={{ color: "rgba(0,229,255,0.025)" }}
       >
         04
       </div>

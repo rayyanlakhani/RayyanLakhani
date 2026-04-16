@@ -3,7 +3,7 @@ import { useEffect, useState } from "react"
 import { motion } from "framer-motion"
 
 export default function Cursor() {
-  const [pos, setPos] = useState({ x: -100, y: -100 })
+  const [pos, setPos]         = useState({ x: -200, y: -200 })
   const [hovered, setHovered] = useState(false)
   const [clicked, setClicked] = useState(false)
   const [visible, setVisible] = useState(false)
@@ -13,14 +13,12 @@ export default function Cursor() {
       setPos({ x: e.clientX, y: e.clientY })
       if (!visible) setVisible(true)
     }
-
     const onOver = (e: MouseEvent) => {
-      const target = e.target as Element
-      setHovered(!!target.closest("a, button, [data-cursor-hover]"))
+      const t = e.target as Element
+      setHovered(!!t.closest("a, button, [data-cursor-hover]"))
     }
-
-    const onDown = () => setClicked(true)
-    const onUp = () => setClicked(false)
+    const onDown  = () => setClicked(true)
+    const onUp    = () => setClicked(false)
     const onLeave = () => setVisible(false)
     const onEnter = () => setVisible(true)
 
@@ -41,34 +39,106 @@ export default function Cursor() {
     }
   }, [visible])
 
-  const dotSize = 6
-  const ringSize = hovered ? 56 : 36
+  // Crosshair arm length and corner bracket sizes
+  const arm    = hovered ? 12 : 8
+  const corner = hovered ? 10 : 7
+  const radius = hovered ? 28 : 20
+
+  // Active color: pink on hover, cyan otherwise
+  const color = hovered ? "#ff00aa" : "#00e5ff"
+  const glow  = hovered
+    ? "0 0 6px rgba(255,0,170,0.9), 0 0 16px rgba(255,0,170,0.4)"
+    : "0 0 6px rgba(0,229,255,0.9), 0 0 16px rgba(0,229,255,0.4)"
 
   return (
     <>
-      {/* Dot — sticks precisely to the cursor */}
+      {/* ── Crosshair center (follows exactly) ── */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full bg-white mix-blend-difference"
-        style={{ width: dotSize, height: dotSize }}
+        className="pointer-events-none fixed top-0 left-0 z-[9999]"
         animate={{
-          x: pos.x - dotSize / 2,
-          y: pos.y - dotSize / 2,
-          scale: clicked ? 0.4 : 1,
+          x: pos.x,
+          y: pos.y,
           opacity: visible ? 1 : 0,
+          scale: clicked ? 0.6 : 1,
         }}
-        transition={{ type: "spring", stiffness: 3000, damping: 100, mass: 0.1 }}
-      />
-      {/* Ring — lags behind for organic feel */}
+        transition={{ type: "spring", stiffness: 2500, damping: 80, mass: 0.08 }}
+        style={{ translateX: "-50%", translateY: "-50%" }}
+      >
+        {/* Center dot */}
+        <div
+          className="absolute rounded-full"
+          style={{
+            width: 4,
+            height: 4,
+            background: color,
+            boxShadow: glow,
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        />
+        {/* Top arm */}
+        <div className="absolute" style={{
+          width: 1, height: arm, background: color, opacity: 0.85,
+          top: `calc(50% - ${arm + 3}px)`, left: "50%", transform: "translateX(-50%)",
+        }} />
+        {/* Bottom arm */}
+        <div className="absolute" style={{
+          width: 1, height: arm, background: color, opacity: 0.85,
+          top: `calc(50% + 3px)`, left: "50%", transform: "translateX(-50%)",
+        }} />
+        {/* Left arm */}
+        <div className="absolute" style={{
+          height: 1, width: arm, background: color, opacity: 0.85,
+          left: `calc(50% - ${arm + 3}px)`, top: "50%", transform: "translateY(-50%)",
+        }} />
+        {/* Right arm */}
+        <div className="absolute" style={{
+          height: 1, width: arm, background: color, opacity: 0.85,
+          left: `calc(50% + 3px)`, top: "50%", transform: "translateY(-50%)",
+        }} />
+      </motion.div>
+
+      {/* ── Corner brackets (lags behind for organic feel) ── */}
       <motion.div
-        className="pointer-events-none fixed top-0 left-0 z-[9999] rounded-full border-2 border-white mix-blend-difference"
-        style={{ width: ringSize, height: ringSize }}
+        className="pointer-events-none fixed top-0 left-0 z-[9999]"
         animate={{
-          x: pos.x - ringSize / 2,
-          y: pos.y - ringSize / 2,
-          opacity: visible ? (clicked ? 0.5 : 1) : 0,
+          x: pos.x,
+          y: pos.y,
+          opacity: visible ? (clicked ? 0.6 : 1) : 0,
         }}
-        transition={{ type: "spring", stiffness: 110, damping: 20, mass: 0.8 }}
-      />
+        transition={{ type: "spring", stiffness: 120, damping: 18, mass: 0.6 }}
+        style={{ translateX: "-50%", translateY: "-50%" }}
+      >
+        {/* Top-left bracket */}
+        <div className="absolute" style={{
+          width: corner, height: corner,
+          borderTop: `1px solid ${color}`, borderLeft: `1px solid ${color}`,
+          boxShadow: glow, opacity: 0.9,
+          top: -radius, left: -radius,
+        }} />
+        {/* Top-right bracket */}
+        <div className="absolute" style={{
+          width: corner, height: corner,
+          borderTop: `1px solid ${color}`, borderRight: `1px solid ${color}`,
+          boxShadow: glow, opacity: 0.9,
+          top: -radius, right: -radius,
+        }} />
+        {/* Bottom-left bracket */}
+        <div className="absolute" style={{
+          width: corner, height: corner,
+          borderBottom: `1px solid ${color}`, borderLeft: `1px solid ${color}`,
+          boxShadow: glow, opacity: 0.9,
+          bottom: -radius, left: -radius,
+        }} />
+        {/* Bottom-right bracket */}
+        <div className="absolute" style={{
+          width: corner, height: corner,
+          borderBottom: `1px solid ${color}`, borderRight: `1px solid ${color}`,
+          boxShadow: glow, opacity: 0.9,
+          bottom: -radius, right: -radius,
+        }} />
+      </motion.div>
     </>
   )
 }

@@ -70,7 +70,6 @@
   --input: var(--non-photo-blue);
   --ring: var(--cerulean);
 
-  /* Sidebar colors */
   --sidebar: #ffffff;
   --sidebar-foreground: var(--berkeley-blue);
   --sidebar-primary: var(--cerulean);
@@ -82,36 +81,148 @@
   --blur-effect-2: #a8dadcff;
   --blur-effect-1: #457b9dff;
 }
+
 .dark {
   --radius: 0.625rem;
-  --background: #000000;
-  --foreground: #ff00aa;
-  --card: #ffffff;
-  --card-foreground: #ff00aa;
-  --popover: #ffffff;
-  --popover-foreground: #ff00aa;
-  --primary: #00e5ff;
+
+  /* ── Readability-first dark palette ── */
+  --background: #030712;
+  --foreground: #e8f4ff;           /* Was #ff00aa — now readable light blue-white */
+  --card: #090d1a;
+  --card-foreground: #e8f4ff;
+  --popover: #090d1a;
+  --popover-foreground: #e8f4ff;
+  --primary: #00e5ff;              /* Cyan — main cyberpunk accent */
   --primary-foreground: #000000;
-  --secondary: #ff00aa;
+  --secondary: #ff00aa;            /* Pink/magenta — secondary accent only */
   --secondary-foreground: #ffffff;
-  --muted: #e6f9ff;
-  --muted-foreground: #ff00aa;
-  --accent: #00e5ff;
-  --accent-foreground: #ff00aa;
-  --destructive: #ff00aa;
-  --border: #00e5ff;
-  --input: #00e5ff;
-  --ring: #ff00aa;
-  --sidebar: #ffffff;
-  --sidebar-foreground: #ff00aa;
+  --muted: #0f1629;
+  --muted-foreground: #6b87a0;
+  --accent: #ff00aa;
+  --accent-foreground: #ffffff;
+  --destructive: #ff2255;
+  --border: rgba(0, 229, 255, 0.16);
+  --input: rgba(0, 229, 255, 0.16);
+  --ring: #00e5ff;
+
+  --sidebar: #090d1a;
+  --sidebar-foreground: #e8f4ff;
   --sidebar-primary: #00e5ff;
   --sidebar-primary-foreground: #000000;
   --sidebar-accent: #ff00aa;
   --sidebar-accent-foreground: #ffffff;
-  --sidebar-border: #00e5ff;
-  --sidebar-ring: #ff00aa;
+  --sidebar-border: rgba(0, 229, 255, 0.16);
+  --sidebar-ring: #00e5ff;
   --blur-effect-2: #ff00aa;
   --blur-effect-1: #00e5ff;
+
+  /* ── Cyberpunk tokens ── */
+  --cyber-cyan: #00e5ff;
+  --cyber-pink: #ff00aa;
+  --cyber-yellow: #ffe600;
+  --glow-cyan: 0 0 8px rgba(0,229,255,0.9), 0 0 25px rgba(0,229,255,0.4), 0 0 60px rgba(0,229,255,0.1);
+  --glow-pink: 0 0 8px rgba(255,0,170,0.9), 0 0 25px rgba(255,0,170,0.4), 0 0 60px rgba(255,0,170,0.1);
+  --glow-white: 0 0 8px rgba(232,244,255,0.6), 0 0 25px rgba(232,244,255,0.2);
+}
+
+/* ─── Cyberpunk Keyframe Animations ─── */
+
+/* Glitch: pink layer (fires periodically) */
+@keyframes glitch-pink {
+  0%, 84%, 100% { clip-path: inset(100% 0 0 0); transform: translate(0); opacity: 0; }
+  85%  { clip-path: inset(38% 0 32% 0); transform: translate(-4px, -2px); opacity: 1; }
+  87%  { clip-path: inset(8%  0 74% 0); transform: translate( 4px,  2px); opacity: 1; }
+  89%  { clip-path: inset(62% 0 18% 0); transform: translate(-2px,  1px); opacity: 1; }
+  91%  { clip-path: inset(22% 0 56% 0); transform: translate( 2px, -1px); opacity: 1; }
+  93%  { clip-path: inset(77% 0  5% 0); transform: translate(-3px,  2px); opacity: 1; }
+  95%  { clip-path: inset( 4% 0 82% 0); transform: translate( 3px, -2px); opacity: 1; }
+  97%  { clip-path: inset(45% 0 40% 0); transform: translate(0); opacity: 0; }
+}
+
+/* Glitch: cyan layer (offset timing) */
+@keyframes glitch-cyan {
+  0%, 84%, 100% { clip-path: inset(100% 0 0 0); transform: translate(0); opacity: 0; }
+  85%  { clip-path: inset(20% 0 60% 0); transform: translate( 4px,  2px); opacity: 1; }
+  87%  { clip-path: inset(74% 0  6% 0); transform: translate(-4px, -2px); opacity: 1; }
+  89%  { clip-path: inset(35% 0 44% 0); transform: translate( 2px, -1px); opacity: 1; }
+  91%  { clip-path: inset(52% 0 25% 0); transform: translate(-2px,  1px); opacity: 1; }
+  93%  { clip-path: inset( 7% 0 79% 0); transform: translate( 3px,  2px); opacity: 1; }
+  95%  { clip-path: inset(66% 0 14% 0); transform: translate(-3px, -2px); opacity: 1; }
+  97%  { clip-path: inset(30% 0 55% 0); transform: translate(0); opacity: 0; }
+}
+
+/* Neon flicker (subtle, occasional) */
+@keyframes neon-flicker {
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% { opacity: 1; }
+  20%, 22%, 24%                           { opacity: 0.35; }
+  55%                                     { opacity: 0.6; }
+}
+
+/* Cursor blink */
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Slow horizontal drift for decorative lines */
+@keyframes h-drift {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(100vw); }
+}
+
+/* Pulse glow */
+@keyframes glow-pulse {
+  0%, 100% { box-shadow: 0 0 6px rgba(0,229,255,0.8), 0 0 18px rgba(0,229,255,0.3); }
+  50%       { box-shadow: 0 0 12px rgba(0,229,255,1),   0 0 40px rgba(0,229,255,0.5); }
+}
+
+/* ─── Reusable Utility Classes ─── */
+
+/* Glitch text effect — wraps the element, fires every ~9 seconds */
+.cyber-glitch {
+  position: relative;
+}
+.cyber-glitch::before,
+.cyber-glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  white-space: inherit;
+}
+.cyber-glitch::before {
+  color: #ff00aa;
+  animation: glitch-pink 9s infinite;
+}
+.cyber-glitch::after {
+  color: #00e5ff;
+  animation: glitch-cyan 9s 0.3s infinite;
+}
+
+/* Subtle full-page scanlines */
+.scanlines::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent,
+    transparent 3px,
+    rgba(0, 0, 0, 0.025) 3px,
+    rgba(0, 0, 0, 0.025) 4px
+  );
+  pointer-events: none;
+  z-index: 9000;
+}
+
+/* Neon text glow helpers */
+.glow-cyan  { text-shadow: var(--glow-cyan); }
+.glow-pink  { text-shadow: var(--glow-pink); }
+.glow-white { text-shadow: var(--glow-white); }
+
+/* Box glow */
+.box-glow-cyan {
+  box-shadow: 0 0 8px rgba(0,229,255,0.5), inset 0 0 8px rgba(0,229,255,0.04);
 }
 
 @layer base {
