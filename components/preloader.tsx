@@ -40,8 +40,14 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
   const [msgCount, setMsgCount]     = useState(0)
   const [showName, setShowName]     = useState(false)
   const [accessGranted, setAccess]  = useState(false)
+  const [stamp, setStamp]           = useState("")
   const timers = useRef<NodeJS.Timeout[]>([])
   const { glitching, start: startGlitch } = useGlitchTrigger(timers)
+
+  /* Computed client-side only — avoids SSR/CSR hydration mismatch */
+  useEffect(() => {
+    setStamp(new Date().toISOString().replace("T", " ").slice(0, 19))
+  }, [])
 
   useEffect(() => {
     const t = (ms: number, fn: () => void) => {
@@ -83,32 +89,19 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
         <motion.div
           key="preloader"
           className="fixed inset-0 z-[9998] flex flex-col select-none overflow-hidden font-[family-name:var(--font-geist-mono)]"
-          style={{ background: "#03050f" }}
+          style={{ background: "#00060e" }}
           exit={{
             y: "-100%",
             transition: { duration: 0.85, ease: EASE },
           }}
         >
-          {/* ── Subtle grid background ── */}
-          <div
-            aria-hidden
-            className="absolute inset-0 pointer-events-none"
-            style={{
-              backgroundImage: `
-                linear-gradient(rgba(0,229,255,0.04) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(0,229,255,0.04) 1px, transparent 1px)
-              `,
-              backgroundSize: "48px 48px",
-            }}
-          />
-
           {/* ── Moving scanline ── */}
           <motion.div
             aria-hidden
             className="absolute left-0 right-0 h-[2px] pointer-events-none"
             style={{
               background:
-                "linear-gradient(90deg, transparent 0%, rgba(0,229,255,0.7) 50%, transparent 100%)",
+                "linear-gradient(90deg, transparent 0%, rgba(254,232,1,0.55) 50%, transparent 100%)",
             }}
             animate={{ top: ["-2px", "100vh"] }}
             transition={{ duration: 3.5, repeat: Infinity, ease: "linear" }}
@@ -122,7 +115,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               key={i}
               aria-hidden
               className={`absolute w-10 h-10 ${cls}`}
-              style={{ borderColor: "rgba(0,229,255,0.55)" }}
+              style={{ borderColor: "rgba(255,255,255,0.6)" }}
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: i * 0.08, duration: 0.3 }}
@@ -136,7 +129,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.2 }}
               className="text-[10px] tracking-[0.35em] uppercase"
-              style={{ color: "rgba(0,229,255,0.5)" }}
+              style={{ color: "rgba(255,255,255,0.5)" }}
             >
               NEURAL_OS v2.0.77
             </motion.span>
@@ -145,7 +138,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.35 }}
               className="text-[10px] tracking-[0.25em]"
-              style={{ color: "rgba(0,229,255,0.35)" }}
+              style={{ color: "rgba(255,255,255,0.4)" }}
             >
               SYS://LAKHANI.NET
             </motion.span>
@@ -154,9 +147,9 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
               className="text-[10px] tracking-wider tabular-nums"
-              style={{ color: "rgba(0,229,255,0.5)" }}
+              style={{ color: "rgba(255,255,255,0.5)" }}
             >
-              {new Date().toISOString().replace("T", " ").slice(0, 19)}
+              {stamp || "────-──-── ──:──:──"}
             </motion.span>
           </div>
 
@@ -164,7 +157,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           <motion.div
             aria-hidden
             className="absolute left-6 top-24 bottom-24 w-px"
-            style={{ background: "linear-gradient(to bottom, transparent, rgba(0,229,255,0.2), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.18), transparent)" }}
             initial={{ scaleY: 0, transformOrigin: "top" }}
             animate={{ scaleY: 1 }}
             transition={{ delay: 0.4, duration: 0.8 }}
@@ -172,7 +165,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           <motion.div
             aria-hidden
             className="absolute right-6 top-24 bottom-24 w-px"
-            style={{ background: "linear-gradient(to bottom, transparent, rgba(0,229,255,0.2), transparent)" }}
+            style={{ background: "linear-gradient(to bottom, transparent, rgba(255,255,255,0.18), transparent)" }}
             initial={{ scaleY: 0, transformOrigin: "top" }}
             animate={{ scaleY: 1 }}
             transition={{ delay: 0.5, duration: 0.8 }}
@@ -191,14 +184,14 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                   {/* Horizontal accent lines flanking name */}
                   <motion.div
                     className="absolute -left-20 top-1/2 h-px w-16"
-                    style={{ background: "rgba(0,229,255,0.4)" }}
+                    style={{ background: "rgba(255,255,255,0.6)" }}
                     initial={{ scaleX: 0, transformOrigin: "right" }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 0.05, duration: 0.3 }}
                   />
                   <motion.div
                     className="absolute -right-20 top-1/2 h-px w-16"
-                    style={{ background: "rgba(0,229,255,0.4)" }}
+                    style={{ background: "rgba(255,255,255,0.6)" }}
                     initial={{ scaleX: 0, transformOrigin: "left" }}
                     animate={{ scaleX: 1 }}
                     transition={{ delay: 0.05, duration: 0.3 }}
@@ -210,16 +203,21 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                     style={{ fontSize: "clamp(5rem, 15vw, 11rem)" }}
                   >
                     {/* RAYYAN row */}
-                    <div className="relative">
+                    <motion.div
+                      className="relative"
+                      initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
+                    >
                       <span className="text-white relative z-10"
-                            style={glitching ? { textShadow: "0 0 12px rgba(232,244,255,0.8)" } : {}}>
+                            style={glitching ? { textShadow: "0 0 12px rgba(255,255,255,0.75)" } : {}}>
                         RAYYAN
                       </span>
                       {/* Glitch layer — pink, left offset */}
                       {glitching && (
                         <span
                           aria-hidden
-                          className="absolute inset-0 text-[#ff00aa] pointer-events-none z-20"
+                          className="absolute inset-0 text-[#ffffff] pointer-events-none z-20"
                           style={{ clipPath: "inset(25% 0 45% 0)", transform: "translate(-5px, -1px)" }}
                         >
                           RAYYAN
@@ -229,21 +227,26 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                       {glitching && (
                         <span
                           aria-hidden
-                          className="absolute inset-0 text-[#00e5ff] pointer-events-none z-20"
+                          className="absolute inset-0 text-[#fee801] pointer-events-none z-20"
                           style={{ clipPath: "inset(55% 0 12% 0)", transform: "translate(5px, 1px)" }}
                         >
                           RAYYAN
                         </span>
                       )}
-                    </div>
+                    </motion.div>
 
                     {/* LAKHANI row */}
-                    <div className="relative">
+                    <motion.div
+                      className="relative"
+                      initial={{ opacity: 0, y: 24, filter: "blur(6px)" }}
+                      animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+                      transition={{ duration: 0.45, delay: 0.12, ease: [0.22, 1, 0.36, 1] }}
+                    >
                       <span
                         className="relative z-10"
                         style={{
-                          color: "#00e5ff",
-                          textShadow: glitching ? "var(--glow-cyan)" : "0 0 20px rgba(0,229,255,0.3)",
+                          color: "#fee801",
+                          textShadow: glitching ? "var(--glow-cyan)" : "0 0 16px rgba(254,232,1,0.28)",
                         }}
                       >
                         LAKHANI
@@ -251,7 +254,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                       {glitching && (
                         <span
                           aria-hidden
-                          className="absolute inset-0 text-[#ff00aa] pointer-events-none z-20"
+                          className="absolute inset-0 text-[#ffffff] pointer-events-none z-20"
                           style={{ clipPath: "inset(60% 0 18% 0)", transform: "translate(-4px, 1px)" }}
                         >
                           LAKHANI
@@ -266,18 +269,18 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                           LAKHANI
                         </span>
                       )}
-                    </div>
+                    </motion.div>
                   </div>
 
-                  {/* ACCESS GRANTED */}
+                  {/* ACCESS GRANTED — absolutely positioned so it doesn't shift the name block */}
                   <AnimatePresence>
                     {accessGranted && (
                       <motion.div
                         initial={{ opacity: 0, letterSpacing: "0.1em" }}
                         animate={{ opacity: 1, letterSpacing: "0.55em" }}
                         transition={{ duration: 0.45, ease: "easeOut" }}
-                        className="text-center mt-6 text-xs tracking-[0.55em] uppercase"
-                        style={{ color: "#00e5ff", textShadow: "var(--glow-cyan)" }}
+                        className="absolute left-0 right-0 text-center text-xs tracking-[0.55em] uppercase"
+                        style={{ top: "calc(100% + 1.5rem)", color: "#fee801", textShadow: "var(--glow-cyan)" }}
                       >
                         [[ ACCESS GRANTED ]]
                       </motion.div>
@@ -301,8 +304,8 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                   transition={{ duration: 0.15 }}
                   className="text-[11px] tracking-wide"
                   style={{
-                    color: isFinal ? "#00e5ff" : "rgba(0,229,255,0.7)",
-                    textShadow: isFinal ? "0 0 6px rgba(0,229,255,0.6)" : "none",
+                    color: isFinal ? "#fee801" : "rgba(255,255,255,0.7)",
+                    textShadow: isFinal ? "0 0 6px rgba(254,232,1,0.5)" : "none",
                   }}
                 >
                   {msg}
@@ -318,7 +321,7 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
           <div className="absolute left-12 right-12 bottom-10">
             <div
               className="flex justify-between text-[9px] tracking-[0.4em] uppercase mb-[7px]"
-              style={{ color: "rgba(0,229,255,0.45)" }}
+              style={{ color: "rgba(255,255,255,0.5)" }}
             >
               <span>LOADING</span>
               <span className="tabular-nums">{String(pct).padStart(3, "0")}%</span>
@@ -333,12 +336,12 @@ export default function Preloader({ onComplete }: { onComplete: () => void }) {
                     className="flex-1 h-full"
                     animate={{
                       backgroundColor: filled
-                        ? isNearEnd ? "#ff00aa" : "#00e5ff"
-                        : "rgba(0,229,255,0.1)",
+                        ? isNearEnd ? "#ffffff" : "#fee801"
+                        : "rgba(255,255,255,0.14)",
                       boxShadow: filled
                         ? isNearEnd
-                          ? "0 0 4px rgba(255,0,170,0.8)"
-                          : "0 0 4px rgba(0,229,255,0.8)"
+                          ? "0 0 4px rgba(255,255,255,0.7)"
+                          : "0 0 4px rgba(254,232,1,0.7)"
                         : "none",
                     }}
                     transition={{ duration: 0.08 }}

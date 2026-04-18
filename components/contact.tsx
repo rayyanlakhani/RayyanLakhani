@@ -1,5 +1,8 @@
 "use client"
-import { motion } from "framer-motion"
+import { useEffect, useRef, useState } from "react"
+import { motion, useInView } from "framer-motion"
+import Magnetic from "./magnetic"
+import ContactForm from "./contact-form"
 
 const EASE = [0.76, 0, 0.24, 1] as const
 
@@ -9,28 +12,50 @@ const socials = [
   { label: "Email",    href: "mailto:bilaltaha16519@gmail.com" },
 ]
 
+const counters = [
+  { value: 27, suffix: "+", label: "PROJECTS DELIVERED" },
+  { value: 4,  suffix: "y",  label: "YEARS BUILDING WEB" },
+  { value: 99, suffix: "%",  label: "CLIENT RETENTION"   },
+  { value: 24, suffix: "h",  label: "AVG. RESPONSE"      },
+]
+
+function Counter({ value, suffix, duration = 1.6 }: { value: number; suffix: string; duration?: number }) {
+  const ref = useRef<HTMLSpanElement>(null)
+  const inView = useInView(ref, { once: true, margin: "-20% 0px" })
+  const [n, setN] = useState(0)
+
+  useEffect(() => {
+    if (!inView) return
+    let raf = 0
+    const start = performance.now()
+    const step = (now: number) => {
+      const t = Math.min(1, (now - start) / (duration * 1000))
+      const eased = 1 - Math.pow(1 - t, 3) // easeOutCubic
+      setN(Math.round(value * eased))
+      if (t < 1) raf = requestAnimationFrame(step)
+    }
+    raf = requestAnimationFrame(step)
+    return () => cancelAnimationFrame(raf)
+  }, [inView, value, duration])
+
+  return (
+    <span ref={ref} className="tabular-nums">
+      {n}
+      {suffix}
+    </span>
+  )
+}
+
 export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative min-h-screen flex flex-col justify-center px-8 md:px-20 py-32 overflow-hidden"
+      className="relative px-8 md:px-20 py-32 overflow-hidden"
     >
-      {/* Background grid */}
       <div
         aria-hidden
         className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
-            linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px)
-          `,
-          backgroundSize: "60px 60px",
-        }}
-      />
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, #030712 100%)" }}
+        style={{ background: "radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, #00060e 100%)" }}
       />
 
       {/* Huge background word */}
@@ -43,7 +68,7 @@ export default function Contact() {
           viewport={{ once: true }}
           transition={{ duration: 1.5 }}
           className="font-[family-name:var(--font-bebas-neue)] text-[28vw] leading-none whitespace-nowrap"
-          style={{ color: "rgba(0,229,255,0.025)" }}
+          style={{ color: "rgba(255,255,255,0.035)" }}
         >
           CONTACT
         </motion.div>
@@ -53,31 +78,29 @@ export default function Contact() {
       <motion.div
         aria-hidden
         className="absolute top-10 left-6 md:left-16 w-8 h-8"
-        style={{ borderTop: "1px solid rgba(0,229,255,0.2)", borderLeft: "1px solid rgba(0,229,255,0.2)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.18)", borderLeft: "1px solid rgba(255,255,255,0.18)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4 }}
       />
       <motion.div
         aria-hidden
         className="absolute top-10 right-6 md:right-16 w-8 h-8"
-        style={{ borderTop: "1px solid rgba(0,229,255,0.2)", borderRight: "1px solid rgba(0,229,255,0.2)" }}
+        style={{ borderTop: "1px solid rgba(255,255,255,0.18)", borderRight: "1px solid rgba(255,255,255,0.18)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.05 }}
       />
 
       <div className="relative z-10 max-w-7xl w-full mx-auto">
-        {/* Section label */}
         <motion.p
           initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
           className="text-secondary text-xs tracking-[0.4em] uppercase mb-8 font-[family-name:var(--font-geist-mono)]"
-          style={{ textShadow: "0 0 6px rgba(255,0,170,0.5)" }}
+          style={{ textShadow: "0 0 6px rgba(255,255,255,0.6)" }}
         >
           Get in Touch
         </motion.p>
 
-        {/* Heading */}
         <div className="overflow-hidden">
           <motion.h2
             initial={{ y: "110%" }} whileInView={{ y: "0%" }}
@@ -99,106 +122,148 @@ export default function Contact() {
           </motion.h2>
         </div>
 
-        {/* CTA row */}
+        {/* Animated counter strip */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.7, delay: 0.15 }}
+          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-14 py-8"
+          style={{
+            borderTop: "1px solid rgba(255,255,255,0.10)",
+            borderBottom: "1px solid rgba(255,255,255,0.10)",
+          }}
+        >
+          {counters.map((c) => (
+            <div key={c.label} className="group">
+              <div
+                className="font-[family-name:var(--font-bebas-neue)] text-5xl md:text-6xl text-primary leading-none transition-all duration-300 group-hover:tracking-wider"
+                style={{ textShadow: "0 0 14px rgba(254,232,1,0.25)" }}
+              >
+                <Counter value={c.value} suffix={c.suffix} />
+              </div>
+              <div
+                className="mt-2 text-[10px] tracking-[0.3em] font-[family-name:var(--font-geist-mono)]"
+                style={{ color: "rgba(255,255,255,0.5)" }}
+              >
+                {c.label}
+              </div>
+            </div>
+          ))}
+        </motion.div>
+
+        {/* Form + side rail */}
         <motion.div
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="flex flex-col md:flex-row items-start md:items-center gap-8"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-10"
         >
-          {/* Primary CTA */}
-          <a
-            href="mailto:bilaltaha16519@gmail.com"
-            data-cursor-hover
-            className="inline-flex items-center gap-4 text-xs tracking-[0.25em] uppercase px-10 py-4 transition-all duration-300 group relative font-[family-name:var(--font-geist-mono)]"
-            style={{
-              color: "#00e5ff",
-              border: "1px solid rgba(0,229,255,0.55)",
-              boxShadow: "0 0 12px rgba(0,229,255,0.1), inset 0 0 12px rgba(0,229,255,0.03)",
-            }}
-            onMouseEnter={(e) => {
-              const el = e.currentTarget
-              el.style.background = "#00e5ff"
-              el.style.color = "#000"
-              el.style.boxShadow = "0 0 24px rgba(0,229,255,0.5), inset 0 0 24px rgba(0,229,255,0.1)"
-            }}
-            onMouseLeave={(e) => {
-              const el = e.currentTarget
-              el.style.background = "transparent"
-              el.style.color = "#00e5ff"
-              el.style.boxShadow = "0 0 12px rgba(0,229,255,0.1), inset 0 0 12px rgba(0,229,255,0.03)"
-            }}
-          >
-            {/* Terminal-style prompt */}
-            <span style={{ color: "rgba(0,229,255,0.5)" }} className="group-hover:text-black/50 transition-colors">
-              &gt;_
-            </span>
-            <span>Send a Message</span>
-            <span className="inline-block group-hover:translate-x-1 transition-transform duration-300">→</span>
-          </a>
+          {/* Form — main column */}
+          <div className="lg:col-span-7">
+            <ContactForm />
 
-          {/* Social links */}
-          <div className="flex gap-8">
-            {socials.map((s) => (
-              <a
-                key={s.label}
-                href={s.href}
-                data-cursor-hover
-                className="text-xs tracking-[0.2em] uppercase transition-all duration-300 font-[family-name:var(--font-geist-mono)] group"
-                style={{ color: "rgba(232,244,255,0.35)" }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "#00e5ff"
-                  ;(e.currentTarget as HTMLElement).style.textShadow = "0 0 6px rgba(0,229,255,0.7)"
-                }}
-                onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLElement).style.color = "rgba(232,244,255,0.35)"
-                  ;(e.currentTarget as HTMLElement).style.textShadow = "none"
-                }}
+            {/* Quick alt */}
+            <div
+              className="mt-6 font-[family-name:var(--font-geist-mono)] flex items-center justify-between flex-wrap gap-3 text-[10px] tracking-widest"
+              style={{ color: "rgba(255,255,255,0.7)" }}
+            >
+              <span>
+                <span style={{ color: "#fee801" }}>&gt;</span> OR EMAIL DIRECTLY
+              </span>
+              <Magnetic strength={0.35} scale={1.04}>
+                <a
+                  href="mailto:bilaltaha16519@gmail.com"
+                  data-cursor-hover
+                  className="px-4 py-2 transition-colors duration-300"
+                  style={{
+                    color: "#fee801",
+                    border: "1px solid rgba(254,232,1,0.45)",
+                  }}
+                  onMouseEnter={(e) => {
+                    ;(e.currentTarget as HTMLElement).style.background = "#fee801"
+                    ;(e.currentTarget as HTMLElement).style.color = "#00060e"
+                  }}
+                  onMouseLeave={(e) => {
+                    ;(e.currentTarget as HTMLElement).style.background = "transparent"
+                    ;(e.currentTarget as HTMLElement).style.color = "#fee801"
+                  }}
+                >
+                  bilaltaha16519@gmail.com
+                </a>
+              </Magnetic>
+            </div>
+          </div>
+
+          {/* Sidebar */}
+          <div className="lg:col-span-5 flex flex-col gap-8">
+            <div
+              className="p-6 font-[family-name:var(--font-geist-mono)]"
+              style={{ border: "1px solid rgba(255,255,255,0.10)" }}
+            >
+              <div
+                className="text-[10px] tracking-[0.4em] uppercase mb-4"
+                style={{ color: "#fee801" }}
               >
-                {s.label}
-              </a>
-            ))}
-          </div>
-        </motion.div>
+                ── FIND ME
+              </div>
+              <div className="flex flex-col gap-3">
+                {socials.map((s) => (
+                  <Magnetic key={s.label} strength={0.3} scale={1.03}>
+                    <a
+                      href={s.href}
+                      data-cursor-hover
+                      className="flex items-center justify-between text-xs tracking-[0.2em] uppercase transition-all duration-300 px-3 py-2 group"
+                      style={{
+                        color: "rgba(255,255,255,0.75)",
+                        border: "1px solid rgba(255,255,255,0.10)",
+                      }}
+                      onMouseEnter={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.color = "#fee801"
+                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                          "rgba(254,232,1,0.5)"
+                      }}
+                      onMouseLeave={(e) => {
+                        ;(e.currentTarget as HTMLElement).style.color =
+                          "rgba(255,255,255,0.75)"
+                        ;(e.currentTarget as HTMLElement).style.borderColor =
+                          "rgba(255,255,255,0.10)"
+                      }}
+                    >
+                      <span>{s.label}</span>
+                      <span>→</span>
+                    </a>
+                  </Magnetic>
+                ))}
+              </div>
+            </div>
 
-        {/* Terminal-style status block */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          className="mt-16 font-[family-name:var(--font-geist-mono)] space-y-1"
-          style={{ color: "rgba(0,229,255,0.3)" }}
-        >
-          <div className="text-[10px] tracking-wider">
-            <span style={{ color: "rgba(0,229,255,0.5)" }}>&gt;</span> STATUS: AVAILABLE FOR NEW OPPORTUNITIES
-          </div>
-          <div className="text-[10px] tracking-wider">
-            <span style={{ color: "rgba(0,229,255,0.5)" }}>&gt;</span> RESPONSE TIME: &lt; 24 HOURS
+            <div
+              className="p-6 font-[family-name:var(--font-geist-mono)] space-y-2"
+              style={{ border: "1px solid rgba(255,255,255,0.10)" }}
+            >
+              <div className="text-[10px] tracking-[0.4em] uppercase mb-3" style={{ color: "#fee801" }}>
+                ── STATUS
+              </div>
+              <div className="text-[10px] tracking-wider flex items-center gap-2" style={{ color: "rgba(255,255,255,0.75)" }}>
+                <motion.span
+                  className="w-[6px] h-[6px] rounded-full inline-block"
+                  style={{ background: "#39c4b6", boxShadow: "0 0 6px #39c4b6" }}
+                  animate={{ opacity: [1, 0.4, 1] }}
+                  transition={{ duration: 1.6, repeat: Infinity }}
+                />
+                AVAILABLE FOR NEW OPPORTUNITIES
+              </div>
+              <div className="text-[10px] tracking-wider" style={{ color: "rgba(255,255,255,0.7)" }}>
+                <span style={{ color: "#fee801" }}>&gt;</span> RESPONSE TIME: &lt; 24 HOURS
+              </div>
+              <div className="text-[10px] tracking-wider" style={{ color: "rgba(255,255,255,0.7)" }}>
+                <span style={{ color: "#fee801" }}>&gt;</span> BASED IN: ISLAMABAD · REMOTE WORLDWIDE
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>
 
-      {/* Footer */}
-      <motion.div
-        initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
-        viewport={{ once: true }}
-        transition={{ duration: 0.8, delay: 0.4 }}
-        className="absolute bottom-10 left-8 md:left-20 right-8 md:right-20 flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pt-8"
-        style={{ borderTop: "1px solid rgba(0,229,255,0.1)" }}
-      >
-        <span
-          className="text-xs tracking-wider font-[family-name:var(--font-geist-mono)]"
-          style={{ color: "rgba(232,244,255,0.25)" }}
-        >
-          © {new Date().getFullYear()} Rayyan Lakhani
-        </span>
-        <span
-          className="text-xs tracking-wider font-[family-name:var(--font-geist-mono)]"
-          style={{ color: "rgba(232,244,255,0.2)" }}
-        >
-          Designed &amp; Built from scratch
-        </span>
-      </motion.div>
     </section>
   )
 }

@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32">
+  <rect width="32" height="32" fill="#00060e"/>
+  <!-- Corner brackets — red glow feel -->
+  <path d="M2 2 H7 M2 2 V7" stroke="#fee801" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+  <path d="M30 30 H25 M30 30 V25" stroke="#fee801" stroke-width="1.5" fill="none" stroke-linecap="square"/>
+  <!-- Monogram — white outer brackets, red RL -->
+  <text x="4" y="23" font-family="'SF Mono','Monaco','Courier New',monospace" font-size="16" font-weight="700" fill="#ffffff">[</text>
+  <text x="16" y="23" font-family="Impact,'Arial Black',sans-serif" font-size="18" font-weight="900" fill="#fee801" text-anchor="middle" letter-spacing="-1">RL</text>
+  <text x="28" y="23" font-family="'SF Mono','Monaco','Courier New',monospace" font-size="16" font-weight="700" fill="#ffffff" text-anchor="end">]</text>
+</svg>

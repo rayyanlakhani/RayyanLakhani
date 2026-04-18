@@ -29,8 +29,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Inline script — runs synchronously before React hydrates so the theme
+  // is applied without a flash. Defaults to dark; respects a user choice
+  // saved in localStorage.
+  const themeBoot = `
+    (function () {
+      try {
+        var t = localStorage.getItem('theme');
+        var d = document.documentElement;
+        if (t === 'light') d.classList.remove('dark');
+        else d.classList.add('dark');
+      } catch (_) {
+        document.documentElement.classList.add('dark');
+      }
+    })();
+  `;
+
   return (
     <html lang="en" className="dark" suppressHydrationWarning>
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeBoot }} />
+      </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${bebasNeue.variable} antialiased scanlines`}
       >

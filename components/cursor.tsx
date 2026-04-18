@@ -44,11 +44,11 @@ export default function Cursor() {
   const corner = hovered ? 10 : 7
   const radius = hovered ? 28 : 20
 
-  // Active color: pink on hover, cyan otherwise
-  const color = hovered ? "#ff00aa" : "#00e5ff"
+  // Active color: periwinkle on hover, neon green otherwise
+  const color = hovered ? "#ffffff" : "#fee801"
   const glow  = hovered
-    ? "0 0 6px rgba(255,0,170,0.9), 0 0 16px rgba(255,0,170,0.4)"
-    : "0 0 6px rgba(0,229,255,0.9), 0 0 16px rgba(0,229,255,0.4)"
+    ? "0 0 6px rgba(255,255,255,0.8), 0 0 14px rgba(255,255,255,0.3)"
+    : "0 0 6px rgba(254,232,1,0.85), 0 0 14px rgba(254,232,1,0.35)"
 
   return (
     <>
