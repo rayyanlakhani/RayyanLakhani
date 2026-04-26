@@ -3,7 +3,14 @@
     "allow": [
       "Bash(npm install:*)",
       "Bash(npm run *)",
-      "Bash(xargs sed *)"
+      "Bash(xargs sed *)",
+      "Bash(npx next *)",
+      "Bash(curl -s -o /tmp/about-render.html -w \"%{http_code}\" http://localhost:3939/)",
+      "Read(//tmp/**)",
+      "Bash(kill bacz118z3 *)",
+      "Bash(pkill -f \"next dev\")",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)"
     ]
   }
 }

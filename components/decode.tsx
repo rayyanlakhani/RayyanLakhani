@@ -17,8 +17,8 @@ const C_CYAN = "#54c1e6"
 const C_TEAL = "#39c4b6"
 
 const RAIN_CHARS = "!<>-_\\/[]{}—=+*^?#ABCDEF0123456789"
-const LINE_1 = "SYSTEMS THAT THINK."
-const LINE_2 = "INTERFACES THAT FEEL."
+const LINE_1 = "BUILDING WEBSITES"
+const LINE_2 = "THAT TELL A STORY."
 
 /** Deterministic PRNG so SSR and CSR produce identical rain content. */
 function seededRandom(seed: number) {
@@ -90,9 +90,8 @@ function TypewriterLine({
 /** Falling columns of pre-generated characters.
     Content is static per column; only `transform` animates.
     Paused via CSS class when the section is not intersecting. */
-function HexRain({ paused }: { paused: boolean }) {
+function HexRain({ paused, cols = 14 }: { paused: boolean; cols?: number }) {
   const columns = useMemo(() => {
-    const cols = 14
     const rand = seededRandom(1337)
     return Array.from({ length: cols }, (_, i) => {
       const chars = Array.from({ length: 26 }, () =>
@@ -106,10 +105,10 @@ function HexRain({ paused }: { paused: boolean }) {
         delay: -((i * 0.83) % 9),
         content: chars,
         color: palette[i % palette.length],
-        isBright: i % 5 === 2, // ~3 bright columns out of 14
+        isBright: i % 5 === 2,
       }
     })
-  }, [])
+  }, [cols])
 
   return (
     <div
@@ -163,8 +162,17 @@ export default function Decode() {
   const lockOpacity = useTransform(progress, [0.85, 0.95], [0, 1])
   const statusOpacity = useTransform(progress, [0, 0.05, 0.9, 1], [0, 1, 1, 0.4])
 
+  const [isMobile, setIsMobile] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(max-width: 767px)")
+    const update = () => setIsMobile(mq.matches)
+    update()
+    mq.addEventListener("change", update)
+    return () => mq.removeEventListener("change", update)
+  }, [])
+
   /* Pause the hex-rain CSS animation while the section is off-screen so we
-     don't keep painting 14 animated columns + glyph glows elsewhere. */
+     don't keep painting animated columns + glyph glows elsewhere. */
   const [rainPaused, setRainPaused] = useState(true)
   useEffect(() => {
     const el = ref.current
@@ -198,7 +206,7 @@ export default function Decode() {
       >
         {/* Hex rain — drifting columns, content static per column */}
         <div className="absolute inset-0" style={{ zIndex: 1 }}>
-          <HexRain paused={rainPaused} />
+          <HexRain paused={rainPaused} cols={isMobile ? 7 : 14} />
         </div>
 
         {/* Radial vignette so the rain fades toward center */}
@@ -225,10 +233,10 @@ export default function Decode() {
 
         {/* Corner brackets */}
         {[
-          { pos: "top-16 left-8 md:left-20",     borders: { borderTop: `1px solid ${C_TEAL}`, borderLeft: `1px solid ${C_TEAL}` } },
-          { pos: "top-16 right-8 md:right-20",   borders: { borderTop: `1px solid ${C_TEAL}`, borderRight: `1px solid ${C_TEAL}` } },
-          { pos: "bottom-16 left-8 md:left-20",  borders: { borderBottom: `1px solid ${C_TEAL}`, borderLeft: `1px solid ${C_TEAL}` } },
-          { pos: "bottom-16 right-8 md:right-20",borders: { borderBottom: `1px solid ${C_TEAL}`, borderRight: `1px solid ${C_TEAL}` } },
+          { pos: "top-16 left-4 sm:left-8 md:left-20",     borders: { borderTop: `1px solid ${C_TEAL}`, borderLeft: `1px solid ${C_TEAL}` } },
+          { pos: "top-16 right-4 sm:right-8 md:right-20",   borders: { borderTop: `1px solid ${C_TEAL}`, borderRight: `1px solid ${C_TEAL}` } },
+          { pos: "bottom-16 left-4 sm:left-8 md:left-20",  borders: { borderBottom: `1px solid ${C_TEAL}`, borderLeft: `1px solid ${C_TEAL}` } },
+          { pos: "bottom-16 right-4 sm:right-8 md:right-20",borders: { borderBottom: `1px solid ${C_TEAL}`, borderRight: `1px solid ${C_TEAL}` } },
         ].map((b, i) => (
           <span
             key={i}
@@ -262,7 +270,7 @@ export default function Decode() {
         </motion.div>
 
         {/* Main content */}
-        <div className="relative z-10 px-8 md:px-20 w-full max-w-7xl text-center">
+        <div className="relative z-10 px-4 sm:px-8 md:px-20 w-full max-w-7xl text-center">
           <p
             className="text-[10px] tracking-[0.5em] uppercase mb-8 font-[family-name:var(--font-geist-mono)]"
             style={{ color: C_OLIVE }}
@@ -303,7 +311,7 @@ export default function Decode() {
           {/* Accent rule */}
           <div className="mt-12 flex items-center justify-center gap-4">
             <div
-              className="h-px w-20 md:w-28"
+              className="h-px w-16 sm:w-20 md:w-28"
               style={{
                 background: `linear-gradient(90deg, transparent, ${C_OLIVE})`,
               }}
@@ -315,7 +323,7 @@ export default function Decode() {
               RAYYAN.LAKHANI
             </span>
             <div
-              className="h-px w-20 md:w-28"
+              className="h-px w-16 sm:w-20 md:w-28"
               style={{
                 background: `linear-gradient(90deg, ${C_OLIVE}, transparent)`,
               }}
@@ -325,7 +333,7 @@ export default function Decode() {
 
         {/* Bottom-left: packet counter */}
         <div
-          className="absolute bottom-20 left-8 md:left-20 font-[family-name:var(--font-geist-mono)] flex flex-col gap-1"
+          className="absolute bottom-20 left-4 sm:left-8 md:left-20 font-[family-name:var(--font-geist-mono)] flex flex-col gap-1"
           style={{ zIndex: 6 }}
         >
           <span
@@ -345,7 +353,7 @@ export default function Decode() {
         {/* Bottom-right: lock indicator */}
         <motion.div
           style={{ opacity: lockOpacity, zIndex: 6 }}
-          className="absolute bottom-20 right-8 md:right-20 font-[family-name:var(--font-geist-mono)] flex flex-col items-end gap-1"
+          className="absolute bottom-20 right-4 sm:right-8 md:right-20 font-[family-name:var(--font-geist-mono)] flex flex-col items-end gap-1"
         >
           <span
             className="text-[9px] tracking-[0.4em] uppercase"

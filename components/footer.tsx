@@ -85,7 +85,7 @@ export default function Footer() {
         next.push(
           { kind: "info", text: "● AVAILABLE — full-time · contract · collab" },
           { kind: "out",  text: "  slot:     2026 · Q2+" },
-          { kind: "out",  text: "  channel:  bilaltaha16519@gmail.com" },
+          { kind: "out",  text: "  channel:  raylak82@gmail.com" },
           { kind: "out",  text: "  response: < 24h" },
         )
         break
@@ -97,7 +97,7 @@ export default function Footer() {
         break
       case "email":
       case "mail":
-        window.location.href = "mailto:bilaltaha16519@gmail.com"
+        window.location.href = "mailto:raylak82@gmail.com"
         next.push({ kind: "info", text: "→ opening mail client…" })
         break
       case "github":

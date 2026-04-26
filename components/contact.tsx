@@ -8,8 +8,8 @@ const EASE = [0.76, 0, 0.24, 1] as const
 
 const socials = [
   { label: "GitHub",   href: "https://github.com/rayyanlakhani" },
-  { label: "LinkedIn", href: "#" },
-  { label: "Email",    href: "mailto:bilaltaha16519@gmail.com" },
+  { label: "LinkedIn", href: "https://www.linkedin.com/in/rayyan-lakhani-6b6950297/" },
+  { label: "Email",    href: "mailto:raylak82@gmail.com" },
 ]
 
 const counters = [
@@ -50,7 +50,7 @@ export default function Contact() {
   return (
     <section
       id="contact"
-      className="relative px-8 md:px-20 py-32 overflow-hidden"
+      className="relative px-4 sm:px-8 md:px-20 py-32 overflow-hidden"
     >
       <div
         aria-hidden
@@ -67,7 +67,7 @@ export default function Contact() {
           initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 1.5 }}
-          className="font-[family-name:var(--font-bebas-neue)] text-[28vw] leading-none whitespace-nowrap"
+          className="font-[family-name:var(--font-bebas-neue)] text-[22vw] sm:text-[28vw] leading-none whitespace-nowrap"
           style={{ color: "rgba(255,255,255,0.035)" }}
         >
           CONTACT
@@ -77,14 +77,14 @@ export default function Contact() {
       {/* Corner brackets */}
       <motion.div
         aria-hidden
-        className="absolute top-10 left-6 md:left-16 w-8 h-8"
+        className="absolute top-10 left-4 sm:left-6 md:left-16 w-8 h-8"
         style={{ borderTop: "1px solid rgba(255,255,255,0.18)", borderLeft: "1px solid rgba(255,255,255,0.18)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4 }}
       />
       <motion.div
         aria-hidden
-        className="absolute top-10 right-6 md:right-16 w-8 h-8"
+        className="absolute top-10 right-4 sm:right-6 md:right-16 w-8 h-8"
         style={{ borderTop: "1px solid rgba(255,255,255,0.18)", borderRight: "1px solid rgba(255,255,255,0.18)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.05 }}
@@ -106,7 +106,7 @@ export default function Contact() {
             initial={{ y: "110%" }} whileInView={{ y: "0%" }}
             viewport={{ once: true }}
             transition={{ duration: 1, ease: EASE }}
-            className="font-[family-name:var(--font-bebas-neue)] text-[clamp(4rem,12vw,11rem)] leading-[0.88] text-foreground"
+            className="font-[family-name:var(--font-bebas-neue)] text-[clamp(2.5rem,10vw,11rem)] leading-[0.88] text-foreground"
           >
             Let&apos;s Build
           </motion.h2>
@@ -116,9 +116,9 @@ export default function Contact() {
             initial={{ y: "110%" }} whileInView={{ y: "0%" }}
             viewport={{ once: true }}
             transition={{ duration: 1, delay: 0.08, ease: EASE }}
-            className="font-[family-name:var(--font-bebas-neue)] text-[clamp(4rem,12vw,11rem)] leading-[0.88] text-primary mb-16 glow-cyan"
+            className="font-[family-name:var(--font-bebas-neue)] text-[clamp(2.5rem,10vw,11rem)] leading-[0.88] text-primary mb-8 sm:mb-16 glow-cyan"
           >
-            Something Great
+            GET IN TOUCH
           </motion.h2>
         </div>
 
@@ -127,7 +127,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.15 }}
-          className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-14 py-8"
+          className="grid grid-cols-2 sm:grid-cols-4 gap-6 mb-14 py-8"
           style={{
             borderTop: "1px solid rgba(255,255,255,0.10)",
             borderBottom: "1px solid rgba(255,255,255,0.10)",
@@ -136,7 +136,7 @@ export default function Contact() {
           {counters.map((c) => (
             <div key={c.label} className="group">
               <div
-                className="font-[family-name:var(--font-bebas-neue)] text-5xl md:text-6xl text-primary leading-none transition-all duration-300 group-hover:tracking-wider"
+                className="font-[family-name:var(--font-bebas-neue)] text-4xl sm:text-5xl md:text-6xl text-primary leading-none transition-all duration-300 group-hover:tracking-wider"
                 style={{ textShadow: "0 0 14px rgba(254,232,1,0.25)" }}
               >
                 <Counter value={c.value} suffix={c.suffix} />
@@ -156,7 +156,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, delay: 0.25 }}
-          className="grid grid-cols-1 lg:grid-cols-12 gap-10"
+          className="grid grid-cols-1 lg:grid-cols-12 gap-6 sm:gap-10"
         >
           {/* Form — main column */}
           <div className="lg:col-span-7">
@@ -172,7 +172,7 @@ export default function Contact() {
               </span>
               <Magnetic strength={0.35} scale={1.04}>
                 <a
-                  href="mailto:bilaltaha16519@gmail.com"
+                  href="mailto:raylak82@gmail.com"
                   data-cursor-hover
                   className="px-4 py-2 transition-colors duration-300"
                   style={{
@@ -188,7 +188,7 @@ export default function Contact() {
                     ;(e.currentTarget as HTMLElement).style.color = "#fee801"
                   }}
                 >
-                  bilaltaha16519@gmail.com
+                  raylak82@gmail.com
                 </a>
               </Magnetic>
             </div>
@@ -211,6 +211,8 @@ export default function Contact() {
                   <Magnetic key={s.label} strength={0.3} scale={1.03}>
                     <a
                       href={s.href}
+                      target={s.href.startsWith("http") ? "_blank" : undefined}
+                      rel={s.href.startsWith("http") ? "noopener noreferrer" : undefined}
                       data-cursor-hover
                       className="flex items-center justify-between text-xs tracking-[0.2em] uppercase transition-all duration-300 px-3 py-2 group"
                       style={{

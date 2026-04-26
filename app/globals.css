@@ -226,6 +226,17 @@
   pointer-events: none;
   z-index: 9000;
 }
+@media (max-width: 640px) {
+  .dark .scanlines::after {
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 4px,
+      rgba(0, 0, 0, 0.018) 4px,
+      rgba(0, 0, 0, 0.018) 5px
+    );
+  }
+}
 
 /* Neon text glow helpers */
 .glow-cyan  { text-shadow: var(--glow-cyan); }
@@ -237,11 +248,11 @@
   box-shadow: 0 0 6px rgba(254,232,1,0.35), inset 0 0 6px rgba(254,232,1,0.04);
 }
 
-/* Typewriter — yellow cursor with matching glow */
+/* Typewriter — yellow cursor (subtle, no bloom) */
 .typewriter-role .Typewriter__cursor {
   color: #fee801;
-  text-shadow: 0 0 6px rgba(254,232,1,0.75);
   margin-left: 2px;
+  opacity: 0.85;
 }
 
 @layer base {

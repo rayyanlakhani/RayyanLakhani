@@ -16,7 +16,7 @@ const stats = [
 
 export default function About() {
   return (
-    <section id="about" className="relative min-h-screen flex items-center px-8 md:px-20 py-32 overflow-hidden">
+    <section id="about" className="relative min-h-screen flex items-center px-4 sm:px-8 md:px-20 py-32 overflow-hidden">
 
       <div
         aria-hidden
@@ -29,20 +29,20 @@ export default function About() {
       {/* Section bracket — top left */}
       <motion.div
         aria-hidden
-        className="absolute top-12 left-6 md:left-16 w-8 h-8"
+        className="absolute top-12 left-4 sm:left-6 md:left-16 w-8 h-8"
         style={{ borderTop: "1px solid rgba(255,255,255,0.22)", borderLeft: "1px solid rgba(255,255,255,0.22)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4 }}
       />
       <motion.div
         aria-hidden
-        className="absolute bottom-12 right-6 md:right-16 w-8 h-8"
+        className="absolute bottom-12 right-4 sm:right-6 md:right-16 w-8 h-8"
         style={{ borderBottom: "1px solid rgba(255,255,255,0.22)", borderRight: "1px solid rgba(255,255,255,0.22)" }}
         initial={{ opacity: 0 }} whileInView={{ opacity: 1 }}
         viewport={{ once: true }} transition={{ duration: 0.4, delay: 0.1 }}
       />
 
-      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-24 items-center relative z-10">
+      <div className="max-w-7xl w-full mx-auto grid grid-cols-1 lg:grid-cols-2 gap-8 sm:gap-12 md:gap-16 lg:gap-24 items-center relative z-10">
         {/* Left — heading */}
         <div>
           <motion.p
@@ -83,7 +83,7 @@ export default function About() {
           <motion.p
             variants={ov} initial="hidden" whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
-            className="text-foreground/80 text-lg leading-relaxed"
+            className="text-foreground/80 text-base sm:text-lg leading-relaxed"
           >
             I&apos;m Rayyan — a passionate developer who loves crafting clean,
             performant digital experiences. I bridge the gap between design and
@@ -94,7 +94,7 @@ export default function About() {
             variants={ov} initial="hidden" whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             transition={{ delay: 0.1 }}
-            className="text-foreground/80 text-lg leading-relaxed"
+            className="text-foreground/80 text-base sm:text-lg leading-relaxed"
           >
             Whether it&apos;s building full-stack applications, optimising
             performance, or exploring the latest in web technology — I bring
@@ -106,7 +106,7 @@ export default function About() {
             variants={ov} initial="hidden" whileInView="visible"
             viewport={{ once: true, margin: "-80px" }}
             transition={{ delay: 0.2 }}
-            className="grid grid-cols-3 gap-6 pt-10"
+            className="grid grid-cols-3 gap-4 sm:gap-6 pt-10"
             style={{ borderTop: "1px solid rgba(255,255,255,0.14)" }}
           >
             {stats.map((s) => (
@@ -119,7 +119,7 @@ export default function About() {
                   {s.hex}
                 </div>
                 <div
-                  className="font-[family-name:var(--font-bebas-neue)] text-5xl text-primary transition-all duration-300 group-hover:glow-cyan"
+                  className="font-[family-name:var(--font-bebas-neue)] text-4xl sm:text-5xl text-primary transition-all duration-300 group-hover:glow-cyan"
                   style={{ textShadow: "0 0 12px rgba(254,232,1,0.22)" }}
                 >
                   {s.value}

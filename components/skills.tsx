@@ -305,7 +305,7 @@ function SkillCard({
           </span>
 
           <span
-            className="flex-1 text-[12px] md:text-[13px] tracking-[0.08em] truncate transition-colors duration-200 group-hover:text-[var(--hover)]"
+            className="flex-1 text-[11px] sm:text-[12px] md:text-[13px] tracking-[0.08em] truncate transition-colors duration-200 group-hover:text-[var(--hover)]"
             style={{
               color: "#e8f4ff",
               ["--hover" as string]: color,
@@ -520,7 +520,7 @@ export default function Skills() {
   return (
     <section
       id="skills"
-      className="relative px-6 md:px-12 py-28 overflow-hidden"
+      className="relative px-4 sm:px-6 md:px-12 py-28 overflow-hidden"
     >
       {/* Background fade */}
       <div
@@ -535,7 +535,7 @@ export default function Skills() {
       {/* Corner brackets */}
       <span
         aria-hidden
-        className="absolute top-14 left-6 md:left-12 w-7 h-7"
+        className="absolute top-14 left-4 sm:left-6 md:left-12 w-7 h-7"
         style={{
           borderTop: `1px solid ${C_TEAL}`,
           borderLeft: `1px solid ${C_TEAL}`,
@@ -544,7 +544,7 @@ export default function Skills() {
       />
       <span
         aria-hidden
-        className="absolute bottom-14 right-6 md:right-12 w-7 h-7"
+        className="absolute bottom-14 right-4 sm:right-6 md:right-12 w-7 h-7"
         style={{
           borderBottom: `1px solid ${C_TEAL}`,
           borderRight: `1px solid ${C_TEAL}`,
@@ -576,7 +576,7 @@ export default function Skills() {
 
           <h2
             className="font-[family-name:var(--font-bebas-neue)] leading-[0.9] text-foreground"
-            style={{ fontSize: "clamp(3.5rem, 9vw, 7rem)" }}
+            style={{ fontSize: "clamp(2.5rem, 9vw, 7rem)" }}
           >
             Live{" "}
             <span
@@ -606,7 +606,7 @@ export default function Skills() {
           <RootNode />
 
           {/* Root → bus */}
-          <VertLine color={C_YELLOW} height={90} delay={0.35} className="mt-8" />
+          <VertLine color={C_YELLOW} height={90} delay={0.35} />
 
           {/* Categories + skills. gap-0 so bus endpoints land on column centers. */}
           <div className="relative w-full">
@@ -626,7 +626,7 @@ export default function Skills() {
               transition={{ duration: 0.75, ease: EASE }}
             />
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-14 md:gap-0">
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-0 md:gap-0">
               {categories.map((cat, ci) => (
                 <div
                   key={cat.id}
@@ -654,6 +654,13 @@ export default function Skills() {
                       />
                     ))}
                   </div>
+                  {ci < categories.length - 1 && (
+                    <VertLine
+                      color={categories[ci + 1].color}
+                      height={40}
+                      className="md:hidden"
+                    />
+                  )}
                 </div>
               ))}
             </div>

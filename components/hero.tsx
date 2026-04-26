@@ -17,10 +17,9 @@ const C_OLIVE  = "#9a9f17"
 const C_BG     = "#00060e"
 
 const roles = [
-  "Creative Engineer",
-  "Frontend Netrunner",
-  "Systems Thinker",
-  "Full-Stack Builder",
+  "AI developer",
+  "UI Designer",
+  "Full-Stack Developer",
 ]
 
 const EASE = [0.76, 0, 0.24, 1] as const
@@ -47,12 +46,11 @@ const CARD_CLIP_INNER =
 const CHIP_CLIP =
   "polygon(10px 0, 100% 0, calc(100% - 10px) 100%, 0 100%)"
 
-/* Chromatic-aberration headline: primary colour + offset cyan/yellow ghost */
+/* Headline: clean colour + soft single-pass glow (no chromatic aberration) */
 function GlitchHeadline({
   text,
   color,
   glow,
-  abber = "#54c1e6",
 }: {
   text: string
   color: string
@@ -60,24 +58,12 @@ function GlitchHeadline({
   abber?: string
 }) {
   return (
-    <span className="relative inline-block cyber-glitch" data-text={text}>
-      <span
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          color: abber,
-          transform: "translate(-2px, 1px)",
-          opacity: 0.4,
-          mixBlendMode: "screen",
-        }}
-      >
-        {text}
-      </span>
+    <span className="relative inline-block">
       <span
         className="relative"
         style={{
           color,
-          textShadow: `0 0 18px ${glow}, 0 0 3px ${glow}`,
+          textShadow: `0 0 10px ${glow}`,
         }}
       >
         {text}
@@ -111,7 +97,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
   useEffect(() => {
     const id = setInterval(() => {
       setHeart(62 + Math.floor(Math.random() * 14))
-    }, 1400)
+    }, 3200)
     return () => clearInterval(id)
   }, [])
 
@@ -119,61 +105,17 @@ export default function Hero({ isReady }: { isReady: boolean }) {
     <section
       id="top"
       ref={sectionRef}
-      className="relative h-screen overflow-hidden px-6 md:px-12 pt-24 pb-10 flex items-center"
+      className="relative h-screen overflow-hidden px-4 sm:px-6 md:px-12 pt-24 pb-10 flex items-center"
     >
-      {/* ── Grid background ── */}
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, rgba(154,159,23,0.07) 1px, transparent 1px),
-            linear-gradient(to bottom, rgba(154,159,23,0.07) 1px, transparent 1px)
-          `,
-          backgroundSize: "64px 64px",
-          maskImage:
-            "radial-gradient(ellipse 95% 75% at 50% 50%, #000 25%, transparent 90%)",
-          WebkitMaskImage:
-            "radial-gradient(ellipse 95% 75% at 50% 50%, #000 25%, transparent 90%)",
-        }}
-      />
 
-      {/* ── Corner brackets (teal) ── */}
-      {isReady && (
-        <>
-          <motion.span
-            aria-hidden
-            className="absolute top-24 left-4 md:left-8 w-7 h-7"
-            style={{
-              borderTop: `1px solid ${C_TEAL}`,
-              borderLeft: `1px solid ${C_TEAL}`,
-              boxShadow: `0 0 8px rgba(57,196,182,0.4)`,
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.8 }}
-          />
-          <motion.span
-            aria-hidden
-            className="absolute bottom-14 right-4 md:right-8 w-7 h-7"
-            style={{
-              borderBottom: `1px solid ${C_TEAL}`,
-              borderRight: `1px solid ${C_TEAL}`,
-              boxShadow: `0 0 8px rgba(57,196,182,0.4)`,
-            }}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 0.9 }}
-          />
-        </>
-      )}
+
 
       {/* ── TOP HUD LINE ── */}
       <AnimatePresence>
         {isReady && (
           <motion.div
             style={{ opacity: hudFade }}
-            className="absolute top-20 left-6 md:left-12 right-6 md:right-12 z-20 flex items-center justify-between font-[family-name:var(--font-geist-mono)]"
+            className="absolute top-20 left-4 sm:left-6 md:left-12 right-4 sm:right-6 md:right-12 z-20 flex items-center justify-between font-[family-name:var(--font-geist-mono)]"
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 1.1, duration: 0.6 }}
@@ -182,23 +124,13 @@ export default function Hero({ isReady }: { isReady: boolean }) {
               <motion.span
                 aria-hidden
                 className="inline-block w-[6px] h-[6px] rounded-full"
-                style={{ background: C_YELLOW, boxShadow: `0 0 8px ${C_YELLOW}` }}
-                animate={{ opacity: [1, 0.3, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
+                style={{ background: C_YELLOW }}
+                animate={{ opacity: [1, 0.5, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity }}
               />
               <span style={{ color: C_OLIVE }}>BROADCAST</span>
-              <span style={{ color: C_CYAN }}>{"//"}</span>
-              <span style={{ color: C_YELLOW, textShadow: `0 0 6px rgba(254,232,1,0.5)` }}>
-                LIVE
-              </span>
-            </div>
-
-            <div
-              className="hidden md:block text-[10px] tracking-[0.35em]"
-              style={{ color: C_OLIVE }}
-            >
-              FREQ <span style={{ color: C_CYAN }}>0xA4.F1</span> · CH{" "}
-              <span style={{ color: C_CYAN }}>01</span>
+              <span style={{ color: C_OLIVE, opacity: 0.5 }}>{"//"}</span>
+              <span style={{ color: C_YELLOW }}>LIVE</span>
             </div>
 
             <div className="hidden md:flex items-center gap-3 text-[10px] tracking-[0.35em]">
@@ -241,20 +173,10 @@ export default function Hero({ isReady }: { isReady: boolean }) {
                 style={{
                   background: C_YELLOW,
                   clipPath: "polygon(50% 0, 100% 50%, 50% 100%, 0 50%)",
-                  boxShadow: `0 0 10px ${C_YELLOW}`,
                 }}
               />
               <span style={{ color: C_TEAL }}>TRANSMISSION // 2026 //</span>
-              <span
-                className="cyber-glitch"
-                data-text="LIVE"
-                style={{
-                  color: C_YELLOW,
-                  textShadow: `0 0 6px rgba(254,232,1,0.6)`,
-                }}
-              >
-                LIVE
-              </span>
+              <span style={{ color: C_YELLOW }}>LIVE</span>
             </div>
           </motion.div>
 
@@ -266,7 +188,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
               style={{ fontSize: "clamp(3.5rem, 11.5vw, 11.5rem)" }}
             >
               <GlitchHeadline
-                text="JACKED IN."
+                text="YOUR IDEAS."
                 color={C_YELLOW}
                 glow="rgba(254,232,1,0.55)"
                 abber={C_CYAN}
@@ -282,7 +204,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
               style={{ fontSize: "clamp(3.5rem, 11.5vw, 11.5rem)" }}
             >
               <GlitchHeadline
-                text="READY TO RUN."
+                text="BROUGHT TO LIFE."
                 color={C_CYAN}
                 glow="rgba(84,193,230,0.5)"
                 abber={C_YELLOW}
@@ -295,10 +217,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
             <span
               aria-hidden
               className="inline-block w-10 h-px"
-              style={{
-                background: C_YELLOW,
-                boxShadow: `0 0 6px rgba(254,232,1,0.55)`,
-              }}
+              style={{ background: C_YELLOW }}
             />
             <div className="text-foreground/80 text-base tracking-wide font-[family-name:var(--font-geist-mono)] flex items-baseline gap-2">
               <span style={{ color: C_OLIVE }}>{"//"}</span>
@@ -318,7 +237,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
           </motion.div>
 
           {/* CTAs */}
-          <motion.div variants={fade} className="flex flex-wrap gap-3 mt-10">
+          <motion.div variants={fade} className="flex flex-wrap gap-2 sm:gap-3 mt-6 sm:mt-10">
             <Magnetic strength={0.35} scale={1.04}>
               <CTAButton href="#projects" primary>
                 VIEW WORK <span className="text-base leading-none">→</span>
@@ -340,7 +259,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
           <motion.div
             key="coords"
             style={{ opacity: hudFade }}
-            className="absolute bottom-8 left-6 md:left-12 font-[family-name:var(--font-geist-mono)]"
+            className="absolute bottom-8 left-4 sm:left-6 md:left-12 font-[family-name:var(--font-geist-mono)]"
             initial={{ opacity: 0, x: -16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.35, duration: 0.6 }}
@@ -360,7 +279,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
           <motion.div
             key="biomonitor"
             style={{ opacity: hudFade }}
-            className="absolute bottom-8 right-6 md:right-12 flex items-end gap-5 font-[family-name:var(--font-geist-mono)]"
+            className="absolute bottom-8 right-4 sm:right-6 md:right-12 flex items-end gap-5 font-[family-name:var(--font-geist-mono)]"
             initial={{ opacity: 0, x: 16 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.45, duration: 0.6 }}
@@ -368,10 +287,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
             <Biomonitor />
             <div className="flex flex-col items-end gap-1 text-[10px] tracking-[0.3em]">
               <span style={{ color: C_OLIVE }}>BPM</span>
-              <span
-                className="tabular-nums"
-                style={{ color: C_YELLOW, textShadow: `0 0 6px rgba(254,232,1,0.5)` }}
-              >
+              <span className="tabular-nums" style={{ color: C_YELLOW }}>
                 {String(heart).padStart(3, "0")}
               </span>
             </div>
@@ -392,7 +308,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
             className="text-[9px] tracking-[0.4em] uppercase font-[family-name:var(--font-geist-mono)]"
             style={{ color: C_OLIVE }}
           >
-            Scroll / Jack Deeper
+            Scroll
           </p>
           <div className="relative w-px h-10 overflow-hidden">
             <motion.div
@@ -401,7 +317,7 @@ export default function Hero({ isReady }: { isReady: boolean }) {
                 background: `linear-gradient(to bottom, ${C_YELLOW}, transparent)`,
               }}
               animate={{ y: ["-100%", "100%"] }}
-              transition={{ duration: 1.4, repeat: Infinity, ease: "linear" }}
+              transition={{ duration: 2.6, repeat: Infinity, ease: "linear" }}
             />
           </div>
         </motion.div>
@@ -413,8 +329,8 @@ export default function Hero({ isReady }: { isReady: boolean }) {
 /* ── Operator card ── */
 
 const ROWS = [
-  { key: "CALLSIGN", value: 'RAYYAN "V" LAKHANI' },
-  { key: "CLASS",    value: "FRONTEND_NETRUNNER" },
+  { key: "NAME", value: 'RAYYAN LAKHANI' },
+  { key: "WORK",    value: "DEVELOPER" },
   { key: "LOC",      value: "ISL-PAK · 33.68 N" },
   { key: "AVAIL",    value: "2026 / Q2+" },
 ]
@@ -428,8 +344,7 @@ function OperatorCard() {
         style={{
           clipPath: CARD_CLIP_OUTER,
           background: C_YELLOW,
-          boxShadow:
-            "0 0 30px rgba(254,232,1,0.22), 0 0 60px rgba(254,232,1,0.08)",
+          opacity: 0.55,
         }}
       />
       <div
@@ -447,10 +362,10 @@ function OperatorCard() {
       <span
         aria-hidden
         className="absolute top-[6px] right-[6px] w-[3px] h-[3px] z-10"
-        style={{ background: C_YELLOW, boxShadow: `0 0 6px ${C_YELLOW}` }}
+        style={{ background: C_YELLOW }}
       />
 
-      <div className="relative p-6 md:p-7">
+      <div className="relative p-4 sm:p-6 md:p-7">
         <div
           className="flex items-center justify-between pb-3 mb-4 font-[family-name:var(--font-geist-mono)]"
           style={{ borderBottom: `1px solid rgba(254,232,1,0.18)` }}
@@ -462,7 +377,6 @@ function OperatorCard() {
               style={{
                 background: C_YELLOW,
                 clipPath: "polygon(50% 0, 100% 50%, 50% 100%, 0 50%)",
-                boxShadow: `0 0 6px ${C_YELLOW}`,
               }}
             />
             <span style={{ color: C_OLIVE }}>OPERATOR // PROFILE</span>
@@ -505,19 +419,16 @@ function OperatorCard() {
             </dt>
             <dd
               className="text-[13px] tracking-[0.2em] flex items-center gap-2"
-              style={{
-                color: C_YELLOW,
-                textShadow: `0 0 6px rgba(254,232,1,0.4)`,
-              }}
+              style={{ color: C_YELLOW }}
             >
               <motion.span
                 aria-hidden
                 className="inline-block w-[6px] h-[6px] rounded-full"
-                style={{ background: C_YELLOW, boxShadow: `0 0 8px ${C_YELLOW}` }}
-                animate={{ opacity: [1, 0.4, 1] }}
-                transition={{ duration: 1.2, repeat: Infinity }}
+                style={{ background: C_YELLOW }}
+                animate={{ opacity: [1, 0.55, 1] }}
+                transition={{ duration: 2.4, repeat: Infinity }}
               />
-              JACKED_IN
+             AVAILABLE
             </dd>
           </div>
         </dl>
@@ -537,28 +448,25 @@ function OperatorCard() {
 /* ── Biomonitor: pulsing vertical bars (heart-rate / adrenaline style) ── */
 function Biomonitor() {
   const bars = [
-    { color: C_YELLOW, delay: 0.15 },
     { color: C_CYAN,   delay: 0.0  },
-    { color: C_YELLOW, delay: 0.35 },
-    { color: C_TEAL,   delay: 0.1  },
     { color: C_YELLOW, delay: 0.4  },
-    { color: C_CYAN,   delay: 0.2  },
-    { color: C_YELLOW, delay: 0.5  },
+    { color: C_TEAL,   delay: 0.2  },
+    { color: C_CYAN,   delay: 0.6  },
   ]
   return (
-    <div aria-hidden className="flex items-end gap-[3px] h-7">
+    <div aria-hidden className="flex items-end gap-[3px] h-6">
       {bars.map((b, i) => (
         <motion.span
           key={i}
           className="block w-[3px] h-full"
           style={{
             background: b.color,
-            boxShadow: `0 0 4px ${b.color}`,
+            opacity: 0.75,
             transformOrigin: "bottom",
           }}
-          animate={{ scaleY: [0.3, 1, 0.5, 0.9, 0.4] }}
+          animate={{ scaleY: [0.45, 0.85, 0.55] }}
           transition={{
-            duration: 1.8,
+            duration: 3.2,
             delay: b.delay,
             repeat: Infinity,
             ease: "easeInOut",

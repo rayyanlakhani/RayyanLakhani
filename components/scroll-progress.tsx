@@ -3,12 +3,12 @@ import { useEffect, useState } from "react"
 import { motion, useScroll, useSpring, useTransform } from "framer-motion"
 
 const SECTIONS = [
-  { id: "top",        label: "00 ── HOME"     },
-  { id: "about",      label: "01 ── ABOUT"    },
-  { id: "skills",     label: "02 ── SKILLS"   },
-  { id: "experience", label: "03 ── JOURNEY"  },
-  { id: "projects",   label: "04 ── PROJECTS" },
-  { id: "contact",    label: "05 ── CONTACT"  },
+  { id: "top",        label: "HOME"     },
+  { id: "about",      label: "ABOUT"    },
+  { id: "skills",     label: "SKILLS"   },
+  { id: "experience", label: "JOURNEY"  },
+  { id: "projects",   label: "PROJECTS" },
+  { id: "contact",    label: "CONTACT"  },
 ]
 
 export default function ScrollProgress() {
@@ -49,11 +49,16 @@ export default function ScrollProgress() {
       className="fixed top-1/2 -translate-y-1/2 right-5 md:right-8 z-40 hidden sm:flex flex-col items-end gap-3 select-none pointer-events-none"
     >
       {/* Percentage readout */}
-      <div
-        className="font-[family-name:var(--font-geist-mono)] text-[10px] tabular-nums tracking-[0.3em]"
-        style={{ color: "rgba(255,255,255,0.5)" }}
-      >
-        {String(pct).padStart(3, "0")}%
+      <div className="flex items-baseline gap-2 font-[family-name:var(--font-geist-mono)]">
+        <span className="text-[9px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.4)" }}>
+          SCROLL
+        </span>
+        <span
+          className="text-[10px] tabular-nums tracking-[0.2em]"
+          style={{ color: "#fee801", textShadow: "0 0 6px rgba(254,232,1,0.4)" }}
+        >
+          {String(pct).padStart(3, "0")}%
+        </span>
       </div>
 
       {/* Vertical rail */}
@@ -102,20 +107,20 @@ export default function ScrollProgress() {
         })}
       </div>
 
-      {/* Status dot */}
+      {/* Status dot — text first, dot at the rail edge */}
       <div className="flex items-center gap-2">
-        <motion.div
-          className="w-[6px] h-[6px] rounded-full"
-          style={{ background: "#fee801", boxShadow: "0 0 6px rgba(254,232,1,0.85)" }}
-          animate={{ opacity: [1, 0.4, 1] }}
-          transition={{ duration: 1.6, repeat: Infinity }}
-        />
         <span
           className="text-[9px] tracking-[0.3em] font-[family-name:var(--font-geist-mono)]"
           style={{ color: "rgba(255,255,255,0.6)" }}
         >
           LIVE
         </span>
+        <motion.div
+          className="w-[6px] h-[6px] rounded-full"
+          style={{ background: "#fee801", boxShadow: "0 0 6px rgba(254,232,1,0.85)" }}
+          animate={{ opacity: [1, 0.4, 1] }}
+          transition={{ duration: 1.6, repeat: Infinity }}
+        />
       </div>
     </div>
   )

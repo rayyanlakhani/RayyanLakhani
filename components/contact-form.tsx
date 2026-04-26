@@ -57,7 +57,7 @@ export default function ContactForm() {
     <form
       onSubmit={handleSubmit(onSubmit)}
       noValidate
-      className="relative w-full grid gap-5 p-6 md:p-8"
+      className="relative w-full grid gap-5 p-4 sm:p-6 md:p-8"
       style={{
         background:
           "linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.01) 100%)",
@@ -116,7 +116,7 @@ export default function ContactForm() {
           rows={5}
           placeholder="Tell me what you're building."
           {...register("message")}
-          className={inputCls + " resize-none min-h-[140px]"}
+          className={inputCls + " resize-none min-h-[120px] sm:min-h-[140px]"}
         />
       </Field>
 
@@ -200,7 +200,7 @@ export default function ContactForm() {
 }
 
 const inputCls =
-  "w-full bg-transparent px-3 py-2.5 text-foreground text-sm outline-none transition-colors duration-200 font-[family-name:var(--font-geist-mono)] placeholder:text-foreground/40"
+  "w-full bg-transparent px-3 py-3 text-foreground text-base sm:text-sm outline-none transition-colors duration-200 font-[family-name:var(--font-geist-mono)] placeholder:text-foreground/40"
 
 function Field({
   label,
@@ -214,7 +214,7 @@ function Field({
   return (
     <label className="block">
       <span
-        className="block text-[9px] tracking-[0.4em] uppercase mb-1.5 font-[family-name:var(--font-geist-mono)]"
+        className="block text-[9px] sm:text-[10px] tracking-[0.4em] uppercase mb-1.5 font-[family-name:var(--font-geist-mono)]"
         style={{ color: "rgba(255,255,255,0.6)" }}
       >
         {label} {error && <span style={{ color: "#fee801" }}>// {error}</span>}

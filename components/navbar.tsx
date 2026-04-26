@@ -88,7 +88,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
 
         {/* Main bar */}
         <div
-          className="relative flex items-center justify-between gap-4 px-4 md:px-8 py-3 transition-colors duration-500"
+          className="relative flex items-center justify-between gap-4 px-4 sm:px-6 md:px-8 py-3 transition-colors duration-500"
           style={{
             background: scrolled ? "rgba(0,6,14,0.82)" : "transparent",
             backdropFilter: scrolled ? "blur(10px) saturate(140%)" : "none",
@@ -106,7 +106,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
           >
             {/* Yellow chip badge */}
             <span
-              className="relative inline-flex items-center justify-center font-[family-name:var(--font-bebas-neue)] tracking-[0.22em] text-[1.05rem] px-4 py-[6px] transition-all duration-300"
+              className="relative inline-flex items-center justify-center font-[family-name:var(--font-bebas-neue)] tracking-[0.22em] text-[1.05rem] px-3 sm:px-4 py-1 sm:py-[6px] transition-all duration-300"
               style={{
                 clipPath: CHIP_CLIP,
                 background: C_YELLOW,
@@ -266,7 +266,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
             {/* Corner brackets */}
             <span
               aria-hidden
-              className="absolute top-20 left-6 w-6 h-6"
+              className="absolute top-16 sm:top-20 left-4 sm:left-6 w-6 h-6"
               style={{
                 borderTop: `1px solid ${C_TEAL}`,
                 borderLeft: `1px solid ${C_TEAL}`,
@@ -275,7 +275,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
             />
             <span
               aria-hidden
-              className="absolute bottom-20 right-6 w-6 h-6"
+              className="absolute bottom-16 sm:bottom-20 right-4 sm:right-6 w-6 h-6"
               style={{
                 borderBottom: `1px solid ${C_TEAL}`,
                 borderRight: `1px solid ${C_TEAL}`,
@@ -284,7 +284,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
             />
 
             <div
-              className="relative px-8 pt-24 flex items-center gap-3 font-[family-name:var(--font-geist-mono)]"
+              className="relative px-6 sm:px-8 pt-20 sm:pt-24 flex items-center gap-3 font-[family-name:var(--font-geist-mono)]"
               onClick={(e) => e.stopPropagation()}
             >
               <span
@@ -305,7 +305,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
             </div>
 
             <nav
-              className="relative flex flex-col gap-4 flex-1 justify-center px-8"
+              className="relative flex flex-col gap-4 flex-1 justify-center px-6 sm:px-8"
               onClick={(e) => e.stopPropagation()}
             >
               {links.map((link, i) => (
@@ -338,7 +338,7 @@ export default function Navbar({ isReady }: { isReady: boolean }) {
                     [{String(i + 1).padStart(2, "0")}]
                   </span>
                   <span
-                    className="font-[family-name:var(--font-bebas-neue)] text-5xl leading-none transition-colors duration-200"
+                    className="font-[family-name:var(--font-bebas-neue)] text-3xl sm:text-4xl md:text-5xl leading-none transition-colors duration-200"
                     style={{ color: "#e8f4ff" }}
                   >
                     {link.label}

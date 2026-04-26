@@ -1,5 +1,4 @@
 "use client"
-import { useRef } from "react"
 import {
   motion,
   useScroll,
@@ -19,12 +18,9 @@ type Props = {
 }
 
 const DEFAULTS = [
-  "AVAILABLE FOR HIRE",
+  "WEB DESIGNER",
   "FULL-STACK ENGINEER",
-  "ISLAMABAD / REMOTE",
-  "FRONTEND ARCHITECT",
-  "CREATIVE DEVELOPER",
-  "BUILDING IN PUBLIC",
+  "WEB DEVELOPER",
 ]
 
 function wrap(min: number, max: number, v: number) {
@@ -44,19 +40,23 @@ export default function Marquee({
     damping: 50,
     stiffness: 400,
   })
-  const velocityFactor = useTransform(smoothVelocity, [0, 1000], [0, 5], {
-    clamp: false,
-  })
+  // Clamped magnitude only — never flips marquee direction with scroll sign,
+  // so rapid up/down scrolling can't whip the strip back and forth.
+  const velocityFactor = useTransform(
+    smoothVelocity,
+    [-1500, 0, 1500],
+    [2.5, 0, 2.5],
+    { clamp: true },
+  )
 
   const x = useTransform(baseX, (v) => `${wrap(-25, -75, v)}%`)
-  const directionFactor = useRef(1)
+  const direction = baseVelocity < 0 ? -1 : 1
 
   useAnimationFrame((_, delta) => {
-    let moveBy = directionFactor.current * baseVelocity * (delta / 1000)
+    // Cap delta — tab-switch / long frames can otherwise produce a giant jump.
+    const dt = Math.min(delta, 50) / 1000
     const v = velocityFactor.get()
-    if (v < 0) directionFactor.current = -1
-    else if (v > 0) directionFactor.current = 1
-    moveBy += directionFactor.current * moveBy * v
+    const moveBy = direction * Math.abs(baseVelocity) * dt * (1 + v)
     baseX.set(baseX.get() + moveBy)
   })
 
@@ -77,7 +77,7 @@ export default function Marquee({
       >
         {/* Left status badge pinned to the edge */}
         <div
-          className="absolute left-0 top-0 bottom-0 z-20 flex items-center gap-2 px-3 md:px-5 font-[family-name:var(--font-geist-mono)]"
+          className="absolute left-0 top-0 bottom-0 z-20 flex items-center gap-2 px-2 sm:px-3 md:px-5 font-[family-name:var(--font-geist-mono)]"
           style={{
             background: "#00060e",
             borderRight: "1px solid rgba(254,232,1,0.45)",
@@ -91,10 +91,10 @@ export default function Marquee({
             transition={{ duration: 1.1, repeat: Infinity }}
           />
           <span
-            className="hidden sm:inline text-[9px] tracking-[0.3em]"
+            className="text-[9px] tracking-[0.3em]"
             style={{ color: "#fee801", textShadow: "0 0 6px rgba(254,232,1,0.6)" }}
           >
-            REC · LIVE FEED
+            REC<span className="hidden sm:inline"> · LIVE FEED</span>
           </span>
         </div>
 
@@ -109,7 +109,7 @@ export default function Marquee({
         />
 
         {/* Scrolling strip */}
-        <div className="py-3.5 pl-[120px] sm:pl-[170px]">
+        <div className="py-3.5 pl-[64px] sm:pl-[120px] md:pl-[170px]">
           <motion.div
             style={{ x }}
             className="flex whitespace-nowrap items-center font-[family-name:var(--font-geist-mono)] tracking-[0.2em]"

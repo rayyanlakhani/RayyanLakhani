@@ -8,59 +8,64 @@ const journey = [
   {
     id: "00",
     year: "2022",
-    label: "ORIGIN",
-    title: "First Line of Code",
-    body: "Discovered programming through Python scripts and small CLI tools. Realised software was the medium I'd been looking for — every idea, executable.",
-    tags: ["Python", "Bash", "Curiosity"],
+    label: "BOOT",
+    role: "Website Developer",
+    company: "Quantino",
+    period: "Jun 2022 — Sep 2023",
+    title: "First Production Code",
+    body: "Joined Quantino as a Website Developer. Shipped 5+ full-stack sites end-to-end with Next.js, Supabase and Tailwind — concept to production, on the client's deadline. Learned what 'done' really means.",
+    tags: ["Next.js", "Supabase", "Tailwind"],
   },
   {
     id: "01",
-    year: "2023",
-    label: "CRAFT",
-    title: "Going Full-Stack",
-    body: "Dove into React, Node, and PostgreSQL. Shipped my first production app — a real-time dashboard used by 200+ daily users in three weeks.",
-    tags: ["React", "Node.js", "PostgreSQL"],
+    year: "2024",
+    label: "INDEX",
+    role: "Website & SEO Intern",
+    company: "Allure Digital",
+    period: "Jun — Sep 2024",
+    title: "Search & Structure",
+    body: "Built 20+ responsive WordPress pages and got 30+ of them ranking on Google's first page. Learned the discipline of structured data, keyword research, and on-page SEO — how much of UX lives outside the viewport.",
+    tags: ["WordPress", "SEO", "Structured Data"],
   },
   {
     id: "02",
     year: "2024",
-    label: "DEPTH",
-    title: "Systems Thinking",
-    body: "Moved up the stack: TypeScript, design systems, performance budgets, CI/CD. Started caring about cache headers as much as colour palettes.",
-    tags: ["TypeScript", "DevOps", "Performance"],
+    label: "SCALE",
+    role: "Full Stack Developer",
+    company: "Quantino",
+    period: "Oct 2024 — Jun 2025",
+    title: "Scaling Up",
+    body: "Promoted to Full Stack. Engineered scalable Next.js apps with SSR and deep API integration, wired in third-party auth and analytics, and shipped 20+ sites while holding SEO across multiple locations.",
+    tags: ["Next.js", "SSR", "APIs"],
   },
   {
     id: "03",
     year: "2025",
-    label: "MOTION",
-    title: "The Creative Web",
-    body: "Found my niche where engineering meets design — Framer Motion, GSAP, WebGL. Building experiences that don't just work, they perform.",
-    tags: ["Framer Motion", "GSAP", "WebGL"],
+    label: "DEGREE",
+    role: "BSc Computer Science",
+    company: "NUST",
+    period: "Class of 2025",
+    title: "Graduated",
+    body: "Bachelor's in Computer Science from the National University of Sciences & Technology. Capstone: FinForecastHub — a SaaS forecasting platform on Next.js + FastAPI hitting 92% prediction accuracy.",
+    tags: ["NUST", "FYP", "FinForecastHub"],
   },
   {
     id: "04",
-    year: "2026",
+    year: "2025",
     label: "NOW",
-    title: "Open for Work",
-    body: "Currently exploring opportunities — full-time, contract, or collab. If you're building something ambitious and need a creative engineer, let's talk.",
-    tags: ["Available", "Remote", "Worldwide"],
+    role: "Full Stack Developer",
+    company: "EdgeFirm",
+    period: "2025 — Present",
+    title: "Building at EdgeFirm",
+    body: "Currently shipping full-stack systems at EdgeFirm — TypeScript, Next.js, end-to-end ownership from data layer to interaction. Open to interesting collabs on the side.",
+    tags: ["TypeScript", "Next.js", "Full-Stack"],
   },
 ]
 
 type Step = (typeof journey)[number]
 
 export default function Experience() {
-  const [isMobile, setIsMobile] = useState(false)
-
-  useEffect(() => {
-    const mq = window.matchMedia("(max-width: 767px)")
-    const update = () => setIsMobile(mq.matches)
-    update()
-    mq.addEventListener("change", update)
-    return () => mq.removeEventListener("change", update)
-  }, [])
-
-  return isMobile ? <ExperienceMobile /> : <ExperienceDesktop />
+  return <ExperienceDesktop />
 }
 
 /* ──────────────────────────────────────────────
@@ -68,13 +73,28 @@ export default function Experience() {
    ────────────────────────────────────────────── */
 function ExperienceDesktop() {
   const sectionRef = useRef<HTMLElement>(null)
+  const [endX, setEndX] = useState("-78vw")
+
+  useEffect(() => {
+    const compute = () => {
+      const vw = window.innerWidth
+      const cardW = Math.min(vw * 0.72, 560)
+      const gap = vw < 768 ? 32 : 48
+      const spacer = vw * 0.2
+      const totalW = journey.length * cardW + (journey.length - 1) * gap + spacer
+      setEndX(`${Math.floor(((vw - totalW) / vw) * 100)}vw`)
+    }
+    compute()
+    window.addEventListener("resize", compute)
+    return () => window.removeEventListener("resize", compute)
+  }, [])
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start start", "end end"],
   })
 
-  const x = useTransform(scrollYProgress, [0, 1], ["2vw", "-78vw"])
+  const x = useTransform(scrollYProgress, [0, 1], ["2vw", endX])
   const headerOpacity = useTransform(scrollYProgress, [0, 0.05, 0.92, 1], [0, 1, 1, 0])
   const progressW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"])
 
@@ -97,13 +117,13 @@ function ExperienceDesktop() {
 
         <motion.div
           style={{ opacity: headerOpacity }}
-          className="absolute top-24 left-8 md:left-20 right-8 md:right-20 z-20 flex justify-between items-end"
+          className="absolute top-24 left-4 sm:left-8 md:left-20 right-4 sm:right-8 md:right-20 z-20 flex justify-between items-end"
         >
           <div>
             <p className="text-primary text-xs tracking-[0.4em] uppercase mb-3 font-[family-name:var(--font-geist-mono)]">
               Journey ↦ Horizontal
             </p>
-            <h2 className="font-[family-name:var(--font-bebas-neue)] text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] text-foreground">
+            <h2 className="font-[family-name:var(--font-bebas-neue)] text-[clamp(2rem,6vw,5rem)] leading-[0.9] text-foreground">
               The Path So Far
             </h2>
           </div>
@@ -112,7 +132,7 @@ function ExperienceDesktop() {
               Scroll ↓ to traverse →
             </span>
             <span className="text-[10px] tracking-widest tabular-nums" style={{ color: "rgba(255,255,255,0.5)" }}>
-              {journey.length} CHAPTERS · 2022 – 2026
+              {journey.length} CHAPTERS · 2022 – NOW
             </span>
           </div>
         </motion.div>
@@ -127,7 +147,7 @@ function ExperienceDesktop() {
           <div className="shrink-0" style={{ width: "20vw" }} />
         </motion.div>
 
-        <div className="absolute bottom-12 left-8 md:left-20 right-8 md:right-20 z-20 flex items-center gap-5">
+        <div className="absolute bottom-12 left-4 sm:left-8 md:left-20 right-4 sm:right-8 md:right-20 z-20 flex items-center gap-5">
           <span className="text-[10px] tracking-[0.4em] uppercase font-[family-name:var(--font-geist-mono)]" style={{ color: "rgba(255,255,255,0.5)" }}>
             00
           </span>
@@ -167,142 +187,6 @@ function ExperienceDesktop() {
         </div>
       </div>
     </section>
-  )
-}
-
-/* ──────────────────────────────────────────────
-   Mobile — vertical timeline with central rail
-   ────────────────────────────────────────────── */
-function ExperienceMobile() {
-  return (
-    <section id="experience" className="relative px-6 py-24 overflow-hidden">
-      <div
-        aria-hidden
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background:
-            "radial-gradient(ellipse 90% 90% at 50% 50%, transparent 40%, #00060e 100%)",
-        }}
-      />
-
-      {/* Header */}
-      <div className="relative z-10 mb-14">
-        <p className="text-primary text-xs tracking-[0.4em] uppercase mb-3 font-[family-name:var(--font-geist-mono)]">
-          Journey ↓ Vertical
-        </p>
-        <h2 className="font-[family-name:var(--font-bebas-neue)] text-[clamp(2.5rem,10vw,4rem)] leading-[0.9] text-foreground">
-          The Path So Far
-        </h2>
-        <p className="mt-3 text-[10px] tracking-[0.3em] uppercase font-[family-name:var(--font-geist-mono)]" style={{ color: "rgba(255,255,255,0.55)" }}>
-          {journey.length} CHAPTERS · 2022–2026
-        </p>
-      </div>
-
-      {/* Vertical rail with cards */}
-      <div className="relative z-10 pl-6">
-        {/* Left rail line */}
-        <div
-          aria-hidden
-          className="absolute left-2 top-0 bottom-0 w-px"
-          style={{
-            background:
-              "linear-gradient(to bottom, transparent, rgba(254,232,1,0.5) 8%, rgba(254,232,1,0.5) 92%, transparent)",
-          }}
-        />
-
-        <div className="flex flex-col gap-10">
-          {journey.map((step, i) => (
-            <motion.div
-              key={step.id}
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              viewport={{ once: true, margin: "-60px" }}
-              transition={{ duration: 0.5, delay: i * 0.05, ease: EASE }}
-              className="relative"
-            >
-              {/* Node dot */}
-              <span
-                aria-hidden
-                className="absolute -left-[22px] top-3 w-[8px] h-[8px]"
-                style={{
-                  background: "#fee801",
-                  boxShadow: "0 0 8px rgba(254,232,1,0.9)",
-                  transform: "rotate(45deg)",
-                }}
-              />
-
-              <MobileCard step={step} />
-            </motion.div>
-          ))}
-        </div>
-      </div>
-    </section>
-  )
-}
-
-function MobileCard({ step }: { step: Step }) {
-  return (
-    <div
-      className="relative p-5 overflow-hidden"
-      style={{
-        background:
-          "linear-gradient(160deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.005) 100%)",
-        border: "1px solid rgba(255,255,255,0.13)",
-      }}
-    >
-      <span
-        aria-hidden
-        className="absolute top-0 left-0 w-3 h-3"
-        style={{ borderTop: "1px solid #fee801", borderLeft: "1px solid #fee801" }}
-      />
-      <span
-        aria-hidden
-        className="absolute bottom-0 right-0 w-3 h-3"
-        style={{ borderBottom: "1px solid #fee801", borderRight: "1px solid #fee801" }}
-      />
-
-      <div className="flex items-start justify-between mb-3 font-[family-name:var(--font-geist-mono)]">
-        <div>
-          <div className="text-[9px] tracking-[0.3em]" style={{ color: "rgba(255,255,255,0.5)" }}>
-            CH {step.id}
-          </div>
-          <div className="flex items-center gap-2 mt-1">
-            <span
-              className="text-[9px] px-2 py-[2px] tracking-widest"
-              style={{
-                color: "#fee801",
-                border: "1px solid rgba(254,232,1,0.5)",
-              }}
-            >
-              {step.label}
-            </span>
-          </div>
-        </div>
-        <span className="font-[family-name:var(--font-bebas-neue)] text-3xl text-foreground/20">
-          {step.year}
-        </span>
-      </div>
-
-      <h3 className="font-[family-name:var(--font-bebas-neue)] text-2xl leading-tight text-foreground mb-2">
-        {step.title}
-      </h3>
-      <p className="text-foreground/70 text-sm leading-relaxed mb-4">{step.body}</p>
-
-      <div className="flex flex-wrap gap-2">
-        {step.tags.map((t) => (
-          <span
-            key={t}
-            className="text-[9px] tracking-wider font-[family-name:var(--font-geist-mono)] px-2 py-[3px]"
-            style={{
-              color: "rgba(255,255,255,0.7)",
-              border: "1px solid rgba(255,255,255,0.16)",
-            }}
-          >
-            {t}
-          </span>
-        ))}
-      </div>
-    </div>
   )
 }
 
@@ -378,7 +262,22 @@ function Card({
         </div>
 
         <div>
-          <h3 className="font-[family-name:var(--font-bebas-neue)] text-4xl md:text-5xl leading-[0.95] text-foreground mb-4">
+          <div className="mb-3">
+            <div className="text-[15px] md:text-base font-medium leading-snug">
+              <span style={{ color: "#fee801", textShadow: "0 0 8px rgba(254,232,1,0.35)" }}>
+                {step.role}
+              </span>
+              <span className="mx-2" style={{ color: "rgba(255,255,255,0.35)" }}>·</span>
+              <span style={{ color: "rgba(255,255,255,0.92)" }}>{step.company}</span>
+            </div>
+            <div
+              className="text-[10px] tracking-[0.22em] uppercase mt-1.5 font-[family-name:var(--font-geist-mono)]"
+              style={{ color: "rgba(255,255,255,0.45)" }}
+            >
+              {step.period}
+            </div>
+          </div>
+          <h3 className="font-[family-name:var(--font-bebas-neue)] text-4xl md:text-5xl leading-[0.95] text-foreground mb-3">
             {step.title}
           </h3>
           <p className="text-foreground/70 text-sm md:text-base leading-relaxed max-w-md">

@@ -43,7 +43,7 @@ export async function POST(req: Request) {
   }
 
   const resend = new Resend(apiKey)
-  const to = process.env.CONTACT_TO_EMAIL || "bilaltaha16519@gmail.com"
+  const to = process.env.CONTACT_TO_EMAIL || "raylak82@gmail.com"
   const fromAddress =
     process.env.RESEND_FROM_EMAIL ||
     process.env.CONTACT_FROM_EMAIL ||
