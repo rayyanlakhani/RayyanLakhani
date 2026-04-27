@@ -142,7 +142,7 @@ export default function ContactForm() {
                 exit={{ opacity: 0 }}
                 style={{ color: "#39c4b6", textShadow: "0 0 6px rgba(57,196,182,0.4)" }}
               >
-                ✓ TRANSMISSION RECEIVED — I'LL REPLY WITHIN 24H
+                ✓ TRANSMISSION RECEIVED — I&apos;LL REPLY WITHIN 24H
                 {status.note && <span className="block opacity-60 mt-1">{status.note}</span>}
               </motion.span>
             )}
@@ -217,7 +217,7 @@ function Field({
         className="block text-[9px] sm:text-[10px] tracking-[0.4em] uppercase mb-1.5 font-[family-name:var(--font-geist-mono)]"
         style={{ color: "rgba(255,255,255,0.6)" }}
       >
-        {label} {error && <span style={{ color: "#fee801" }}>// {error}</span>}
+        {label} {error && <span style={{ color: "#fee801" }}>{"// "}{error}</span>}
       </span>
       <div
         className="transition-all duration-200 focus-within:[box-shadow:0_1px_0_0_#fee801]"
