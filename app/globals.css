@@ -259,9 +259,11 @@
   * {
     @apply border-border outline-ring/50;
   }
-  /* Custom cursor is a dark-mode aesthetic — light mode uses system cursor */
-  .dark * {
-    cursor: none;
+  /* Custom cursor is a dark-mode aesthetic — only hide native cursor on pointer devices */
+  @media (hover: hover) and (pointer: fine) {
+    .dark * {
+      cursor: none;
+    }
   }
   body {
     @apply bg-background text-foreground;
